@@ -1,3 +1,5 @@
+package backend;
+
 /**
  * Created by Tomas on 29.04.2016.
  */
@@ -6,6 +8,7 @@ public class Employee {
     private Long id;
     private String firstName;
     private String surname;
+    private Double hourlyWage;
 
     public Double getHourlyWage() {
         return hourlyWage;
@@ -14,8 +17,6 @@ public class Employee {
     public void setHourlyWage(Double hourlyWage) {
         this.hourlyWage = hourlyWage;
     }
-
-    private Double hourlyWage;
 
     public String getName() {
         return firstName;

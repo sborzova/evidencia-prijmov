@@ -1,0 +1,46 @@
+package backend;
+
+import java.time.LocalDate;
+
+/**
+ * Created by Tomas on 12.05.2016.
+ */
+public class Revenue {
+
+    private long id;
+    private int hours;
+    private Double totalSalary;
+    private LocalDate drawInvoiceDate;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public Double getTotalSalary() {
+        return totalSalary;
+    }
+
+    public void setTotalSalary(Double totalSalary) {
+        this.totalSalary = totalSalary;
+    }
+
+    public LocalDate getDrawInvoiceDate() {
+        return drawInvoiceDate;
+    }
+
+    public void setDrawInvoiceDate(LocalDate drawInvoiceDate) {
+        this.drawInvoiceDate = drawInvoiceDate;
+    }
+}

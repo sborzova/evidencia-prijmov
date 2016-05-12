@@ -14,7 +14,4 @@ public class Invoice {
     public void blabla() {
 
     }
-
-
-
 }

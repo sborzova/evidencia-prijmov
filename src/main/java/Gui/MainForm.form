@@ -338,7 +338,7 @@
                       <forms/>
                     </constraints>
                     <properties>
-                      <text value="Number of revenues:"/>
+                      <text value="Revenues in total"/>
                     </properties>
                   </component>
                   <component id="ac3fe" class="javax.swing.JTextField" binding="textField4" default-binding="true">

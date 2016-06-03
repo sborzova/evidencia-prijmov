@@ -1,5 +1,7 @@
 package backend;
 
+import java.util.List;
+
 /**
  * Created by Tomas on 29.04.2016.
  */
@@ -9,6 +11,14 @@ public class Employee {
     private String firstName;
     private String surname;
     private Double hourlyWage;
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
     public Double getHourlyWage() {
         return hourlyWage;

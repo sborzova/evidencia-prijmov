@@ -108,6 +108,7 @@
                       <forms/>
                     </constraints>
                     <properties>
+                      <icon value="add.png"/>
                       <text value="Add"/>
                     </properties>
                   </component>
@@ -117,6 +118,7 @@
                       <forms/>
                     </constraints>
                     <properties>
+                      <icon value="update.png"/>
                       <text value="Update"/>
                     </properties>
                   </component>
@@ -126,6 +128,7 @@
                       <forms/>
                     </constraints>
                     <properties>
+                      <icon value="delete.png"/>
                       <text value="Delete"/>
                     </properties>
                   </component>
@@ -135,6 +138,7 @@
                       <forms/>
                     </constraints>
                     <properties>
+                      <icon value="revenue.png"/>
                       <text value="Create statement of revenue"/>
                     </properties>
                   </component>
@@ -379,6 +383,7 @@
                       <forms/>
                     </constraints>
                     <properties>
+                      <icon value="add.png"/>
                       <text value="Generate"/>
                     </properties>
                   </component>
@@ -388,6 +393,7 @@
                       <forms/>
                     </constraints>
                     <properties>
+                      <icon value="pdf.png"/>
                       <text value="Export to PDF"/>
                     </properties>
                   </component>

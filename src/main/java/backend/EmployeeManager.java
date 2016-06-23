@@ -5,6 +5,8 @@ import org.xmldb.api.*;
 import javax.xml.transform.OutputKeys;
 import org.exist.xmldb.EXistResource;
 
+import java.util.List;
+
 /**
  * Created by Tomas on 12.05.2016.
  */
@@ -12,11 +14,12 @@ public class EmployeeManager {
 
     private Collection collection;
 
+
     public EmployeeManager(Collection collection) {
         this.collection = collection;
     }
 
-    public void CreateEmployee(String firstName, String surname, Double hourlyWage) throws XMLDBException {
+    public void createEmployee(Employee employee) throws XMLDBException {
 
         //nedokoncene.. query pre pridanie noveho node
         String Query = "insert node <>";
@@ -26,13 +29,48 @@ public class EmployeeManager {
         xpqs.query(Query);
     }
 
-    public void UpdateEmpoyee() {
+    public void deleteEmployee(Employee employee) {
 
     }
 
-    public void DeleteEmployee() {
+    public void createStatementOfRevenue(Employee employee, Revenue revenue) {
 
     }
 
+    public List<Employee> listAllEmployees() {
+        XMLResource res = null;
 
+        try {
+            res = (XMLResource)collection.getResource("Employees");
+
+            if(res == null) {
+                System.out.println("document not found!");
+            } else {
+                System.out.println(res.getContent());
+            }
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        } finally {
+
+            if(res != null) {
+                try {
+                    ((EXistResource)res).freeResources();
+                } catch(XMLDBException xe) {
+                    xe.printStackTrace();
+                }
+            }
+
+            if(collection != null) {
+                try {
+                    collection.close();
+                } catch(XMLDBException xe) {
+                    xe.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public Employee getEmployee(Long id) {
+        return null;
+    }
 }

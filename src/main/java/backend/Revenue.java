@@ -7,6 +7,7 @@ import java.time.LocalDate;
  */
 public class Revenue {
 
+    private long employeeId;
     private long id;
     private int hours;
     private Double totalSalary;
@@ -42,5 +43,13 @@ public class Revenue {
 
     public void setDrawInvoiceDate(LocalDate drawInvoiceDate) {
         this.drawInvoiceDate = drawInvoiceDate;
+    }
+
+    public long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(long employeeId) {
+        this.employeeId = employeeId;
     }
 }

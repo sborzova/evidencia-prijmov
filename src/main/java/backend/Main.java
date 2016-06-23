@@ -6,7 +6,6 @@ import org.xmldb.api.*;
 import javax.xml.transform.OutputKeys;
 import org.exist.xmldb.EXistResource;
 
-
 // TENTO MAIN BUDE V MAINFOrM!!!! VYTVORI sa TAM KOLEKCIA AK ESTE NEEXISTUJE A PRIDAJU SA DO NEJ XML SUBORY SO ZAKLADNOU KOSTROU
 //XML SO ZAKLADNOU KOSTROU BUDE ULOZENY V RESOURCES, ABY PRI PRVOM SPSTENI APLIKACIE MOOHOL PRIRADIT DO NOVOVYTORENEJ KOLEKCIE
 //
@@ -24,6 +23,7 @@ public class Main {
         database.setProperty("create-database", "true");
         DatabaseManager.registerDatabase(database);
 
+        XMLResource res = null;
         try {
             col = DatabaseManager.getCollection(URI);
             col.setProperty(OutputKeys.INDENT, "no");
@@ -43,5 +43,6 @@ public class Main {
 
         initializeDatabase();
         EmployeeManager manager = new EmployeeManager(col);
+        //manager.listAllEmployees();
     }
 }

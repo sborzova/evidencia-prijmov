@@ -1,5 +1,6 @@
 package backend;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -8,9 +9,9 @@ import java.util.List;
 public class Employee {
 
     private Long id;
-    private String firstName;
+    private String forename;
     private String surname;
-    private Double hourlyWage;
+    private BigDecimal hourlyWage;
 
     public String getSurname() {
         return surname;
@@ -20,20 +21,20 @@ public class Employee {
         this.surname = surname;
     }
 
-    public Double getHourlyWage() {
+    public BigDecimal getHourlyWage() {
         return hourlyWage;
     }
 
-    public void setHourlyWage(Double hourlyWage) {
+    public void setHourlyWage(BigDecimal hourlyWage) {
         this.hourlyWage = hourlyWage;
     }
 
-    public String getName() {
-        return firstName;
+    public String getForename() {
+        return forename;
     }
 
-    public void setName(String name) {
-        this.firstName = name;
+    public void setForename(String name) {
+        this.forename = name;
     }
 
     public Long getId() {

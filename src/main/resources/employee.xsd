@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified">
+
+    <xsd:element name="employees" type="employeesType">
+        <xsd:unique name="employeeUnique">
+            <xsd:selector xpath="./employee"/>
+            <xsd:field xpath="./@eid"/>
+        </xsd:unique>
+    </xsd:element>
+
+    <xsd:complexType name="employeesType">
+        <xsd:sequence>
+            <xsd:element name="employee" minOccurs="0" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="firstName" type="menoType"/>
+                        <xsd:element name="surname" type="menoType"/>
+                        <xsd:element name="hourlyWage" type="wageType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:simpleType name="menoType">
+        <xsd:restriction base="xsd:string">
+            <xsd:minLength value="1"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="wageType">
+        <xsd:restriction base="xsd:double">
+            <xsd:minExclusive value="1"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

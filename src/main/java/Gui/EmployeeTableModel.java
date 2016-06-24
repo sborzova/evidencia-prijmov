@@ -121,7 +121,7 @@ public class EmployeeTableModel extends AbstractTableModel {
 
         @Override
         protected void done() {
-            employees.delete(row);
+            employees.remove(row);
             fireTableRowsDeleted(row, row);
         }
     }
@@ -129,11 +129,13 @@ public class EmployeeTableModel extends AbstractTableModel {
     private class createStatementOfRevenueSwingWorker extends SwingWorker <Void, Void> {
 
         private final EmployeeManager employeeManager;
+        private final RevenueTableModel revenueTableModel;
         private final Revenue revenue;
         private final int row;
 
-        public createStatementOfRevenueSwingWorker(EmployeeManager employeeManager, Revenue revenue, int rowIndex) {
+        public createStatementOfRevenueSwingWorker(EmployeeManager employeeManager, RevenueTableModel revenueTableModel, Revenue revenue, int rowIndex) {
             this.employeeManager = employeeManager;
+            this.revenueTableModel = revenueTableModel;
             this.revenue = revenue;
             this.row = rowIndex;
         }
@@ -141,6 +143,7 @@ public class EmployeeTableModel extends AbstractTableModel {
         @Override
         protected Void doInBackground() throws Exception {
             employeeManager.createStatementOfRevenue(employeeManager.getEmployee((Long) getValueAt(row, 0)), revenue);
+            revenueTableModel.addRow(revenue);
             return null;
         }
     }
@@ -150,13 +153,13 @@ public class EmployeeTableModel extends AbstractTableModel {
         addSwingWorker.execute();
     }
 
-    public void deleteRow(int row) {
+    void deleteRow(int row) {
         DeleteSwingWorker deleteSwingWorker = new DeleteSwingWorker(employeeManager, row);
         deleteSwingWorker.execute();
     }
 
-    public void createStatementOfRevenueOfRow(EmployeeManager employeeManager, Revenue revenue, int row) {
-        EmployeeTableModel.createStatementOfRevenueSwingWorker createStatementOfRevenueSwingWorker = new createStatementOfRevenueSwingWorker(employeeManager, revenue, row);
+    void createStatementOfRevenueOfRow(EmployeeManager employeeManager, RevenueTableModel revenueTableModel, Revenue revenue, int row) {
+        EmployeeTableModel.createStatementOfRevenueSwingWorker createStatementOfRevenueSwingWorker = new createStatementOfRevenueSwingWorker(employeeManager, revenueTableModel, revenue, row);
         createStatementOfRevenueSwingWorker.execute();
     }
 

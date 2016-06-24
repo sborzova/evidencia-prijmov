@@ -54,6 +54,7 @@ public class Main {
         emp.setHourlyWage(BigDecimal.valueOf(50));
 
         //manager.createEmployee(emp);
-        manager.deleteEmployee(emp);
+        //manager.deleteEmployee(emp);
+        manager.getEmployee(1L);
     }
 }

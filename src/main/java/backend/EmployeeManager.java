@@ -13,7 +13,7 @@ import java.util.List;
 public class EmployeeManager {
 
     private Collection collection;
-    
+
     public EmployeeManager(Collection collection) {
         this.collection = collection;
     }
@@ -41,7 +41,7 @@ public class EmployeeManager {
 
         Long id = employee.getId();
 
-        String Query = "update delete /employees/employee[@id='1']";
+        String Query = "update delete /employees/employee[@id="+1+"]";
 
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
@@ -61,7 +61,7 @@ public class EmployeeManager {
             XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
             xpqs.setProperty("indent", "yes");
 
-            String xpath = "/company/employees/employee/child::node()/text()";
+            String xpath = "employees/employee/child::node()/text()";
 
             ResourceSet result = xpqs.query(xpath);
             ResourceIterator i = result.getIterator();
@@ -95,8 +95,7 @@ public class EmployeeManager {
 
                 employees.add(employee);
             }
-
-
+            
         } catch (XMLDBException e) {
             e.printStackTrace();
         } finally {
@@ -108,7 +107,41 @@ public class EmployeeManager {
         return employees;
     }
 
-    public Employee getEmployee(Long id) {
-        return null;
+    public Employee getEmployee(Long id) throws XMLDBException {
+
+        Employee employee = new Employee();
+
+        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+        xpqs.setProperty("indent", "yes");
+
+        String xpath = "/employees/employee[@id="+id+"]/child::node()/text()";
+
+        ResourceSet result = xpqs.query(xpath);
+        ResourceIterator i = result.getIterator();
+        Resource res = null;
+
+        try {
+            res = i.nextResource();
+            employee.setForename(res.getContent().toString());
+        } finally {
+            try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+        }
+        try {
+            res = i.nextResource();
+            employee.setSurname(res.getContent().toString());
+        } finally {
+
+            try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+        }
+        try {
+            res = i.nextResource();
+            employee.setHourlyWage(new BigDecimal( res.getContent().toString()));
+
+        } finally {
+
+            try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+        }
+
+        return employee;
     }
 }

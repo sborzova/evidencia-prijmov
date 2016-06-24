@@ -26,25 +26,31 @@ public class EmployeeManager {
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
-        ResourceSet result = xpqs.query("/employees/employee[last()]/@id");
+        ResourceSet result = xpqs.query("string(/employees/employee[last()]/@id)");
 
         ResourceIterator i = result.getIterator();
-        Resource res = null;
+        Resource res;
         res = i.nextResource();
 
-
-        Long id = Long.valueOf(res.getContent().toString());
+        Long id;
+        if(res.getContent().toString().equals("")) {
+            id = 1L;
+        } else {
+            id = Long.parseLong(res.getContent().toString());
+            id++;
+        }
 
         String Query = "update insert"
-        + "<employee>"
+        + "<employee eid="+ id +">"
         + "     <name>"+ forename +"</name>"
         + "     <surname>"+ surname +"</surname>"
         + "     <hourlyWage>"+ wage +"</hourlyWage>"
         + "</employee>"
         + "into /employees";
 
-
-        xpqs.query(Query);
+        XPathQueryService xpqss = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+        xpqss.setProperty("indent", "yes");
+        xpqss.query(Query);
     }
 
     public void deleteEmployee(Employee employee) throws XMLDBException {
@@ -71,7 +77,7 @@ public class EmployeeManager {
             XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
             xpqs.setProperty("indent", "yes");
 
-            String xpath = "employees/employee/child::node()/text()";
+            String xpath = "/employees/employee/child::node()/text()";
 
             ResourceSet result = xpqs.query(xpath);
             ResourceIterator i = result.getIterator();

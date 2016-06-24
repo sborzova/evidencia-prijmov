@@ -1,15 +1,27 @@
 package Gui;
 
+import backend.Employee;
+import backend.EmployeeManager;
+import backend.Revenue;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class RevenueDialog extends JDialog {
+
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
-    private JTextField textField1;
+    private JComboBox monthComboBox;
+    private JComboBox yearComboBox;
+    private JTextField hoursTextField;
+    private Employee employee;
+    private EmployeeTableModel employeeTableModel;
+    private EmployeeManager employeeManager = new EmployeeManager();
+    private RevenueTableModel revenueTableModel;
+    private int selectedRow;
 
     public RevenueDialog() {
         setContentPane(contentPane);
@@ -45,16 +57,27 @@ public class RevenueDialog extends JDialog {
     }
 
     private void onOK() {
-// add your code here
+        Revenue revenue = new Revenue();
+        revenue.setEmployeeId(employee.getId());
+        int hours = Integer.parseInt(hoursTextField.getText());
+        revenue.setHours(hours);
+        revenue.setTotalSalary(employee.getHourlyWage().multiply(new BigDecimal(hours)).doubleValue());
+        int month = monthComboBox.getSelectedIndex() + 1;
+        int year = Integer.parseInt((String) yearComboBox.getSelectedItem());
+        revenue.setDrawInvoiceDate(LocalDate.of(year, month, 1));
+        employeeTableModel.createStatementOfRevenueOfRow(employeeManager, revenueTableModel, revenue, selectedRow);
         dispose();
     }
 
     private void onCancel() {
-// add your code here if necessary
         dispose();
     }
 
-    public static void main(String[] args) {
+    void main(Employee employee, EmployeeTableModel employeeTableModel, RevenueTableModel revenueTableModel, int selectedRow) {
+        this.employee = employee;
+        this.employeeTableModel = employeeTableModel;
+        this.revenueTableModel = revenueTableModel;
+        this.selectedRow = selectedRow;
         RevenueDialog dialog = new RevenueDialog();
         dialog.pack();
         dialog.setVisible(true);

@@ -13,7 +13,7 @@ import java.util.List;
 public class EmployeeManager {
 
     private Collection collection;
-    
+
     public EmployeeManager(Collection collection) {
         this.collection = collection;
     }
@@ -41,7 +41,7 @@ public class EmployeeManager {
 
         Long id = employee.getId();
 
-        String Query = "update delete /employees/employee[@id='1']";
+        String Query = "update delete /employees/employee[@id="+1+"]";
 
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");

@@ -6,6 +6,8 @@ import org.xmldb.api.*;
 import javax.xml.transform.OutputKeys;
 import org.exist.xmldb.EXistResource;
 
+import java.math.BigDecimal;
+
 // TENTO MAIN BUDE V MAINFOrM!!!! VYTVORI sa TAM KOLEKCIA AK ESTE NEEXISTUJE A PRIDAJU SA DO NEJ XML SUBORY SO ZAKLADNOU KOSTROU
 //XML SO ZAKLADNOU KOSTROU BUDE ULOZENY V RESOURCES, ABY PRI PRVOM SPSTENI APLIKACIE MOOHOL PRIRADIT DO NOVOVYTORENEJ KOLEKCIE
 //
@@ -43,6 +45,15 @@ public class Main {
 
         initializeDatabase();
         EmployeeManager manager = new EmployeeManager(col);
-        //manager.listAllEmployees();
+        manager.listAllEmployees();
+
+
+        Employee emp = new Employee();
+        emp.setForename("Debil");
+        emp.setSurname("retardovany");
+        emp.setHourlyWage(BigDecimal.valueOf(50));
+
+        //manager.createEmployee(emp);
+        manager.deleteEmployee(emp);
     }
 }

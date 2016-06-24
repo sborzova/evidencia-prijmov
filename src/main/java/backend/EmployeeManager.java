@@ -24,6 +24,17 @@ public class EmployeeManager {
         String surname = employee.getSurname();
         String wage = employee.getHourlyWage().toString();
 
+        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+        xpqs.setProperty("indent", "yes");
+        ResourceSet result = xpqs.query("/employees/employee[last()]/@id");
+
+        ResourceIterator i = result.getIterator();
+        Resource res = null;
+        res = i.nextResource();
+
+
+        Long id = Long.valueOf(res.getContent().toString());
+
         String Query = "update insert"
         + "<employee>"
         + "     <name>"+ forename +"</name>"
@@ -32,8 +43,7 @@ public class EmployeeManager {
         + "</employee>"
         + "into /employees";
 
-        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
-        xpqs.setProperty("indent", "yes");
+
         xpqs.query(Query);
     }
 

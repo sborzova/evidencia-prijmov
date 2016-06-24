@@ -1,10 +1,10 @@
 package backend;
 import org.xmldb.api.base.*;
 import org.xmldb.api.modules.*;
-import org.xmldb.api.*;
-import javax.xml.transform.OutputKeys;
 import org.exist.xmldb.EXistResource;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,24 +13,40 @@ import java.util.List;
 public class EmployeeManager {
 
     private Collection collection;
-
-
+    
     public EmployeeManager(Collection collection) {
         this.collection = collection;
     }
 
     public void createEmployee(Employee employee) throws XMLDBException {
 
-        //nedokoncene.. query pre pridanie noveho node
-        String Query = "insert node <>";
+        String forename = employee.getForename();
+        String surname = employee.getSurname();
+        String wage = employee.getHourlyWage().toString();
+
+        String Query = "update insert"
+        + "<employee>"
+        + "     <name>"+ forename +"</name>"
+        + "     <surname>"+ surname +"</surname>"
+        + "     <hourlyWage>"+ wage +"</hourlyWage>"
+        + "</employee>"
+        + "into /employees";
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
         xpqs.query(Query);
     }
 
-    public void deleteEmployee(Employee employee) {
+    public void deleteEmployee(Employee employee) throws XMLDBException {
 
+        Long id = employee.getId();
+
+        String Query = "update delete /employees/employee[@id='1']";
+
+
+        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+        xpqs.setProperty("indent", "yes");
+        xpqs.query(Query);
     }
 
     public void createStatementOfRevenue(Employee employee, Revenue revenue) {
@@ -38,36 +54,58 @@ public class EmployeeManager {
     }
 
     public List<Employee> listAllEmployees() {
-        XMLResource res = null;
+
+        List<Employee> employees = new ArrayList<Employee>();
 
         try {
-            res = (XMLResource)collection.getResource("Employees");
+            XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+            xpqs.setProperty("indent", "yes");
 
-            if(res == null) {
-                System.out.println("document not found!");
-            } else {
-                System.out.println(res.getContent());
+            String xpath = "/company/employees/employee/child::node()/text()";
+
+            ResourceSet result = xpqs.query(xpath);
+            ResourceIterator i = result.getIterator();
+            Resource res = null;
+
+            while(i.hasMoreResources()) {
+
+                Employee employee = new Employee();
+
+                    try {
+                        res = i.nextResource();
+                        employee.setForename(res.getContent().toString());
+                    } finally {
+                        try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+                    }
+                    try {
+                        res = i.nextResource();
+                        employee.setSurname(res.getContent().toString());
+                    } finally {
+
+                        try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+                    }
+                    try {
+                        res = i.nextResource();
+                        employee.setHourlyWage(new BigDecimal( res.getContent().toString()));
+
+                    } finally {
+
+                        try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+                    }
+
+                employees.add(employee);
             }
+
+
         } catch (XMLDBException e) {
             e.printStackTrace();
         } finally {
-
-            if(res != null) {
-                try {
-                    ((EXistResource)res).freeResources();
-                } catch(XMLDBException xe) {
-                    xe.printStackTrace();
-                }
-            }
-
             if(collection != null) {
-                try {
-                    collection.close();
-                } catch(XMLDBException xe) {
-                    xe.printStackTrace();
-                }
+                try { collection.close(); } catch(XMLDBException xe) {xe.printStackTrace();}
             }
         }
+
+        return employees;
     }
 
     public Employee getEmployee(Long id) {

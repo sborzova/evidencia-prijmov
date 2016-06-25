@@ -35,7 +35,6 @@ public class MainFrame {
     private JTable invoiceTable;
     private JButton exportToPDFButton;
     private JButton viewRevenuesButton;
-    private JButton deleteRevenueButton;
     private JButton generateInvoiceButton;
     private JTabbedPane tabbedPane1;
     private JPanel employeePanel;
@@ -90,7 +89,7 @@ public class MainFrame {
     private MainFrame() {
 
         employeeTable.setModel(new EmployeeTableModel(employeeManager));
-        revenueTable.setModel(new RevenueTableModel(revenueManager));
+        revenueTable.setModel(new RevenueTableModel(revenueManager, employeeManager));
 
 
         addEmployeeButton.addActionListener(new ActionListener() {
@@ -129,6 +128,8 @@ public class MainFrame {
         employeeTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
+                RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
+                revenueTableModel.listRows(employeeTable.getSelectedRow());
                 addEmployeeButton.setEnabled(false);
                 deleteEmployeeButton.setEnabled(true);
                 createStatementOfRevenueButton.setEnabled(true);

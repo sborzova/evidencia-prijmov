@@ -41,7 +41,7 @@ public class MainFrame {
     private JPanel employeePanel;
     private JTextField hourlyWageTextField;
     private JPanel revenuePanel;
-    private JTextField textField1;
+    private JTextField revenuesInTotalTextField;
     private JLabel hourlyWageLabel;
     private static EmployeeManager employeeManager;
     private static RevenueManager revenueManager;
@@ -134,6 +134,7 @@ public class MainFrame {
                 revenueTableModel.listRows((Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
                 deleteEmployeeButton.setEnabled(true);
                 createStatementOfRevenueButton.setEnabled(true);
+                revenueTableModel.revenuesInTotal(revenueTable, revenuesInTotalTextField);
             }
         });
 
@@ -146,6 +147,7 @@ public class MainFrame {
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
                 revenueTableModel.findRows(LocalDate.of(fromYear, fromMonth, 1), LocalDate.of(toYear, toMonth, 1), (Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
+                revenueTableModel.revenuesInTotal(revenueTable, revenuesInTotalTextField);
             }
         });
 
@@ -185,6 +187,8 @@ public class MainFrame {
             }
         });
         */
+
+
 
     }
 }

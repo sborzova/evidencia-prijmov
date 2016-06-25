@@ -107,6 +107,8 @@ public class MainFrame {
             public void actionPerformed(ActionEvent e) {
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 employeeTableModel.deleteRow(employeeTable.getSelectedRow());
+                RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
+                revenueTableModel.listRows(-1L);
                 addEmployeeButton.setEnabled(true);
                 deleteEmployeeButton.setEnabled(false);
                 createStatementOfRevenueButton.setEnabled(false);
@@ -131,7 +133,6 @@ public class MainFrame {
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
                 revenueTableModel.listRows((Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
-                addEmployeeButton.setEnabled(false);
                 deleteEmployeeButton.setEnabled(true);
                 createStatementOfRevenueButton.setEnabled(true);
             }

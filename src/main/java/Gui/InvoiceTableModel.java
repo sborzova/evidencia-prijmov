@@ -16,17 +16,12 @@ public class InvoiceTableModel extends AbstractTableModel {
 
 
     private final InvoiceManager invoiceManager;
-    private final RevenueManager revenueManager;
-    private final EmployeeManager employeeManager;
     private List<Invoice> invoices = new ArrayList<Invoice>();
-    private Invoice invoice;
     private ReadAllSwingWorker readAllSwingWorker;
 
-    public InvoiceTableModel(InvoiceManager invoiceManager, RevenueManager revenueManager, EmployeeManager employeeManager) {
+    public InvoiceTableModel(InvoiceManager invoiceManager) {
 
         this.invoiceManager = invoiceManager;
-        this.revenueManager = revenueManager;
-        this.employeeManager = employeeManager;
         readAllSwingWorker = new ReadAllSwingWorker(invoiceManager);
         readAllSwingWorker.execute();
 
@@ -80,31 +75,26 @@ public class InvoiceTableModel extends AbstractTableModel {
         }
     }
 
-    private class AddSwingWorker extends SwingWorker<Invoice, Void> {
+    private class AddSwingWorker extends SwingWorker<Void, Void> {
 
-        private final RevenueManager revenueManager;
-        private final EmployeeManager employeeManager;
-        private final Long id;
-        private final LocalDate from;
-        private final LocalDate to;
+        private final InvoiceManager invoiceManager;
+        private final Invoice invoice;
 
-        public AddSwingWorker(RevenueManager revenueManager, EmployeeManager employeeManager, Long id, LocalDate from, LocalDate to) {
-            this.revenueManager = revenueManager;
-            this.employeeManager = employeeManager;
-            this.id = id;
-            this.from = from;
-            this.to = to;
+        public AddSwingWorker(InvoiceManager invoiceManager, Invoice invoice) {
+            this.invoiceManager = invoiceManager;
+            this.invoice = invoice;
         }
 
         @Override
-        protected Invoice doInBackground() throws Exception {
-            return revenueManager.generateDocBook(employeeManager.getEmployee(id), from, to);
+        protected Void doInBackground() throws Exception {
+            invoiceManager.generateDocBook(invoice);
+            return null;
         }
 
         @Override
         protected void done() {
             try {
-                invoice = get();
+                get();
                 invoices.add(invoice);
                 fireTableRowsInserted(invoices.size() - 1, invoices.size() - 1);
             } catch (Exception e) {
@@ -130,8 +120,8 @@ public class InvoiceTableModel extends AbstractTableModel {
         }
     }
 
-    void generateRows(Long id, LocalDate from, LocalDate to, InvoiceTableModel invoiceTableModel) {
-        AddSwingWorker addSwingWorker = new AddSwingWorker(revenueManager, employeeManager, id, from, to);
+    void addRow(Invoice invoice) {
+        AddSwingWorker addSwingWorker = new AddSwingWorker(invoiceManager, invoice);
         addSwingWorker.execute();
     }
 

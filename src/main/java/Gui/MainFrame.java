@@ -1,9 +1,6 @@
 package Gui;
 
-import backend.Employee;
-import backend.EmployeeManager;
-import backend.InvoiceManager;
-import backend.RevenueManager;
+import backend.*;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
@@ -154,13 +151,17 @@ public class MainFrame {
 
         generateInvoiceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                Invoice invoice = new Invoice();
                 int fromMonth = fromMonthComboBox.getSelectedIndex() + 1;
                 int fromYear = Integer.parseInt((String) fromYearComboBox.getSelectedItem());
                 int toMonth = toMonthComboBox.getSelectedIndex() + 1;
                 int toYear = Integer.parseInt((String) toYearComboBox.getSelectedItem());
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 InvoiceTableModel invoiceTableModel = (InvoiceTableModel) invoiceTable.getModel();
-                invoiceTableModel.generateRows((Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0), LocalDate.of(fromYear, fromMonth, 1), LocalDate.of(toYear, toMonth, 1), invoiceTableModel);
+                invoice.setEmployeeID((Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
+                invoice.setFrom(LocalDate.of(fromYear, fromMonth, 1));
+                invoice.setTo(LocalDate.of(toYear, toMonth, 1));
+                invoiceTableModel.addRow(invoice);
             }
         });
 

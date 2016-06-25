@@ -128,8 +128,9 @@ public class MainFrame {
         employeeTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
+                EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
-                revenueTableModel.listRows(employeeTable.getSelectedRow());
+                revenueTableModel.listRows((Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
                 addEmployeeButton.setEnabled(false);
                 deleteEmployeeButton.setEnabled(true);
                 createStatementOfRevenueButton.setEnabled(true);

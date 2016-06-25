@@ -8,6 +8,7 @@
         <book>
             <article>
                 <title>Invoice</title>
+                <iid><xsl:value-of select="iid"/></iid>
                 <subtitle>Date</subtitle>
                 <from><xsl:value-of select="date/from"/></from>
                 <to><xsl:value-of select="date/to"/></to>

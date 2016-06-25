@@ -47,9 +47,9 @@ public class CreateXMLImpl implements CreateXML {
             Element rootElement = doc.createElement("invoice");
             doc.appendChild(rootElement);
 
-            Element id = doc.createElement("id");
-            id.appendChild(doc.createTextNode(idInvoice.toString()));
-            rootElement.appendChild(id);
+            Element iid = doc.createElement("iid");
+            iid.appendChild(doc.createTextNode(idInvoice.toString()));
+            rootElement.appendChild(iid);
 
             Element date = doc.createElement("date");
             rootElement.appendChild(date);

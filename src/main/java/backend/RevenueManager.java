@@ -40,7 +40,7 @@ public class RevenueManager {
         }
 
         revenue.setId(id);
-   
+
         String Query = "update insert"
                 + "<revenue>"
                 + "     <rid>"+ revenue.getId() +"</rid>"
@@ -82,6 +82,42 @@ public class RevenueManager {
         return revenues;
     }
 
+    public List<Revenue> findRevenuesByEmployee(Employee employee) throws XMLDBException {
+
+        List<Revenue> revenues = new ArrayList<Revenue>();
+
+        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+        xpqs.setProperty("indent", "yes");
+
+        String xpath = "/revenues/revenue[eid="+employee.getId()+"]/child::node()/text()";
+        ResourceSet result = xpqs.query(xpath);
+        ResourceIterator iterator = result.getIterator();
+
+        while(iterator.hasMoreResources()) {
+            revenues.add(setUpRevenue(iterator));
+        }
+
+        return revenues;
+    }
+
+    public List<Revenue> listRevenuesByDate(Employee employee, LocalDate from, LocalDate to) throws XMLDBException {
+
+        List<Revenue> revenues = new ArrayList<Revenue>();
+
+        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+        xpqs.setProperty("indent", "yes");
+
+        String xpath = "/revenues/revenue[eid="+employee.getId()+" and drawInvoiceDate>="+from+" and drawInvoiceDate<="+to+"]";
+        ResourceSet result = xpqs.query(xpath);
+        ResourceIterator iterator = result.getIterator();
+
+        while(iterator.hasMoreResources()) {
+            revenues.add(setUpRevenue(iterator));
+        }
+
+        return revenues;
+    }
+
     public Revenue setUpRevenue(ResourceIterator i) throws XMLDBException {
 
         Revenue revenue = new Revenue();
@@ -112,7 +148,7 @@ public class RevenueManager {
             try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
         }
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date;
 
             res = i.nextResource();
@@ -122,41 +158,5 @@ public class RevenueManager {
         }
 
         return revenue;
-    }
-
-    public List<Revenue> findRevenuesByEmployee(Employee employee) throws XMLDBException {
-
-        List<Revenue> revenues = new ArrayList<Revenue>();
-
-        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
-        xpqs.setProperty("indent", "yes");
-
-        String xpath = "/revenues/revenue[eid="+employee.getId()+"]";
-        ResourceSet result = xpqs.query(xpath);
-        ResourceIterator iterator = result.getIterator();
-
-        while(iterator.hasMoreResources()) {
-            revenues.add(setUpRevenue(iterator));
-        }
-
-        return revenues;
-    }
-
-    public List<Revenue> listRevenuesByDate(Employee employee, LocalDate from, LocalDate to) throws XMLDBException {
-
-        List<Revenue> revenues = new ArrayList<Revenue>();
-
-        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
-        xpqs.setProperty("indent", "yes");
-
-        String xpath = "/revenues/revenue[eid="+employee.getId()+" and drawInvoiceDate>="+from+" and drawInvoiceDate<="+to+"]";
-        ResourceSet result = xpqs.query(xpath);
-        ResourceIterator iterator = result.getIterator();
-
-        while(iterator.hasMoreResources()) {
-            revenues.add(setUpRevenue(iterator));
-        }
-
-        return revenues;
     }
 }

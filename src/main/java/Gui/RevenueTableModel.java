@@ -159,18 +159,18 @@ public class RevenueTableModel extends AbstractTableModel {
             private final RevenueManager revenueManager;
             private final LocalDate from;
             private final LocalDate to;
-            private final int row;
+            private final Long id;
 
-            public FindSwingWorker(RevenueManager revenueManager, LocalDate from, LocalDate to, int row) {
+            public FindSwingWorker(RevenueManager revenueManager, LocalDate from, LocalDate to, Long id) {
                 this.revenueManager = revenueManager;
                 this.from = from;
                 this.to = to;
-                this.row = row;
+                this.id = id;
             }
 
             @Override
             protected List<Revenue> doInBackground() throws Exception {
-                return revenueManager.listRevenuesByDate(employeeManager.getEmployee((Long) getValueAt(row, 0)), from, to);
+                return revenueManager.listRevenuesByDate(employeeManager.getEmployee(id), from, to);
             }
 
             @Override
@@ -227,8 +227,8 @@ public class RevenueTableModel extends AbstractTableModel {
     }
 
 
-    void findRows(LocalDate from, LocalDate to, int row) {
-        FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManager, from, to, row);
+    void findRows(LocalDate from, LocalDate to, Long id) {
+        FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManager, from, to, id);
         findSwingWorker.execute();
     }
 /*

@@ -137,18 +137,19 @@ public class MainFrame {
             }
         });
 
-        /*
         viewRevenuesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int fromMonth = fromMonthComboBox.getSelectedIndex() + 1;
                 int fromYear = Integer.parseInt((String) fromYearComboBox.getSelectedItem());
                 int toMonth = toMonthComboBox.getSelectedIndex() + 1;
                 int toYear = Integer.parseInt((String) toYearComboBox.getSelectedItem());
+                EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
-                revenueTableModel.findRows(LocalDate.of(fromYear, fromMonth, 1), LocalDate.of(toYear, toMonth, 1), employeeTable.getSelectedRow());
+                revenueTableModel.findRows(LocalDate.of(fromYear, fromMonth, 1), LocalDate.of(toYear, toMonth, 1), (Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
             }
         });
 
+        /*
         generateInvoiceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int fromMonth = fromMonthComboBox.getSelectedIndex() + 1;

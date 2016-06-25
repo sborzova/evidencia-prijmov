@@ -3,6 +3,7 @@ package FileProcessing;
 import backend.Employee;
 import backend.Revenue;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,5 +12,12 @@ import java.util.List;
  */
 public interface CreateXML {
 
-    void createXML(Employee employee, LocalDate fromDate, LocalDate toDate, List<Revenue> revenuesList);
+    /**
+     *
+     * @param employeeData Employee
+     * @param fromDate
+     * @param toDate
+     * @param revenuesList
+     */
+    File createXML(Employee employeeData, LocalDate fromDate, LocalDate toDate, List<Revenue> revenuesList);
 }

@@ -9,5 +9,10 @@ import java.io.File;
  */
 public interface ToDkb {
 
+    /**
+     *
+     * @return
+     * @throws TransformerException
+     */
     File toDbk() throws TransformerException;
 }

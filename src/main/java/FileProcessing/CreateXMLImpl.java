@@ -27,29 +27,19 @@ import java.util.List;
  */
 public class CreateXMLImpl implements CreateXML {
 
-    // this method is called, file is returned (dbk resp. xml)
+    /**
+     * final variable represents path to revenue xml file
+     */
+    private static final String REVENUE_XML_PATH = ".\\src\\main\\resources\\revenueXml.xml";
 
     private ToDkbImpl toDbkManager = new ToDkbImpl();
 
-    /**
-     *
-     * @param employeeData
-     * @param fromDate
-     * @param toDate
-     * @param revenuesList
-     */
     @Override
-    public void createXML(Employee employeeData, LocalDate fromDate, LocalDate toDate, List<Revenue> revenuesList) {
+    public File createXML(Employee employeeData, LocalDate fromDate, LocalDate toDate, List<Revenue> revenuesList) {
+
+        File file = null;
+
         try {
-/*
-            Employee emp = new Employee(1L, "Rki", "ttt", new BigDecimal(10));
-            List<Revenue> revenuesList = new ArrayList<>();
-            revenuesList.add(new Revenue(1L, 1L, 50, new BigDecimal(4576.12), LocalDate.of(2000,10,1)));
-            revenuesList.add(new Revenue(1L, 2L, 90, new BigDecimal(458.12), LocalDate.of(2000,10,1)));
-
-            LocalDate fromDate = LocalDate.of(1997,10,1);
-            LocalDate toDate = LocalDate.of(1998,10,1);*/
-
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -71,19 +61,11 @@ public class CreateXMLImpl implements CreateXML {
             Element employee = doc.createElement("employee");
             rootElement.appendChild(employee);
 
-            /*
-            Element eid = doc.createElement("eid");
-            eid.appendChild(doc.createTextNode(Long.toString(emp.getId())));
-            employee.appendChild(eid);
-            */
-
             Attr employee_atr = doc.createAttribute("id");
             employee_atr.setValue(Long.toString(employeeData.getId()));
             employee.setAttributeNode(employee_atr);
 
-
-            // shorten way
-            // staff.setAttribute("id", "1");
+            // shorten way staff.setAttribute("id", "1");
 
             Element forname = doc.createElement("forname");
             forname.appendChild(doc.createTextNode(employeeData.getForename()));
@@ -122,32 +104,34 @@ public class CreateXMLImpl implements CreateXML {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(".\\src\\main\\resources\\file.xml"));
-
+            StreamResult result = new StreamResult(new File(REVENUE_XML_PATH));
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
 
             transformer.transform(source, result);
-            //toDbkManager.toDbk();
 
-        } catch (ParserConfigurationException | TransformerException pce) {
-            pce.printStackTrace();
+            file = toDbkManager.toDbk();
+
+        } catch (ParserConfigurationException | TransformerException ex) {
+            ex.printStackTrace();
         }
+
+        return file;
     }
 
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         ToDkbImpl toDbkManager = new ToDkbImpl();
         ToPDFImpl toPDFManager = new ToPDFImpl();
         try {
 
-            Employee employeeData = new Employee(1L, "Rki", "ttt", new BigDecimal(10));
+            Employee employeeData = new Employee(1L, "Rita", "Mal", new BigDecimal(10));
             List<Revenue> revenuesList = new ArrayList<>();
             revenuesList.add(new Revenue(1L, 1L, 50, new BigDecimal(4576.12), LocalDate.of(2000,10,1)));
             revenuesList.add(new Revenue(1L, 2L, 90, new BigDecimal(458.12), LocalDate.of(2000,10,1)));
 
-            LocalDate fromDate = LocalDate.of(1479,10,1);
-            LocalDate toDate = LocalDate.of(1111,10,1);
+            LocalDate fromDate = LocalDate.of(2222,2,2);
+            LocalDate toDate = LocalDate.of(1998,10,1);
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -176,10 +160,9 @@ public class CreateXMLImpl implements CreateXML {
             employee.appendChild(eid);
             */
 
-            Attr employee_atr = doc.createAttribute("id");
+ /*           Attr employee_atr = doc.createAttribute("id");
             employee_atr.setValue(Long.toString(employeeData.getId()));
             employee.setAttributeNode(employee_atr);
-
 
             // shorten way
             // staff.setAttribute("id", "1");
@@ -221,20 +204,17 @@ public class CreateXMLImpl implements CreateXML {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(".\\src\\main\\resources\\revenueXml.xml"));
-
-            // Output to console for testing
-            // StreamResult result = new StreamResult(System.out);
+            StreamResult result = new StreamResult(new File(REVENUE_XML_PATH));
 
             transformer.transform(source, result);
 
-            //experiment
-
-            toPDFManager.convertToPDF(toDbkManager.toDbk());
+            File file = toDbkManager.toDbk();
+            toPDFManager.convertToPDF(file);
 
         } catch (ParserConfigurationException | TransformerException | FOPException | IOException pce) {
             pce.printStackTrace();
         }
     }
+*/
 
 }

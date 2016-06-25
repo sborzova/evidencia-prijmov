@@ -157,12 +157,14 @@ public class RevenueTableModel extends AbstractTableModel {
         private class FindSwingWorker extends SwingWorker<List<Revenue>, Void> {
 
             private final RevenueManager revenueManager;
+            private final EmployeeManager employeeManager;
             private final LocalDate from;
             private final LocalDate to;
             private final Long id;
 
-            public FindSwingWorker(RevenueManager revenueManager, LocalDate from, LocalDate to, Long id) {
+            public FindSwingWorker(RevenueManager revenueManager, EmployeeManager employeeManager, LocalDate from, LocalDate to, Long id) {
                 this.revenueManager = revenueManager;
+                this.employeeManager = employeeManager;
                 this.from = from;
                 this.to = to;
                 this.id = id;
@@ -228,7 +230,7 @@ public class RevenueTableModel extends AbstractTableModel {
 
 
     void findRows(LocalDate from, LocalDate to, Long id) {
-        FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManager, from, to, id);
+        FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManager, employeeManager, from, to, id);
         findSwingWorker.execute();
     }
 /*

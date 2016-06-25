@@ -80,7 +80,7 @@ public class MainFrame {
     public static void main(String[] args) throws Exception {
 
         initializeDatabase();
-        JFrame frame = new JFrame("Movie database");
+        JFrame frame = new JFrame("Salary evidence");
         frame.setContentPane(new MainFrame().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

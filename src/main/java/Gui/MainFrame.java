@@ -108,8 +108,6 @@ public class MainFrame {
             public void actionPerformed(ActionEvent e) {
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 employeeTableModel.deleteRow(employeeTable.getSelectedRow());
-                DefaultTableModel defaultTableModel = (DefaultTableModel) revenueTable.getModel();
-                defaultTableModel.setRowCount(0);
                 addEmployeeButton.setEnabled(true);
                 deleteEmployeeButton.setEnabled(false);
                 createStatementOfRevenueButton.setEnabled(false);

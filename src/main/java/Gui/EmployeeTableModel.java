@@ -34,8 +34,6 @@ class EmployeeTableModel extends AbstractTableModel {
         return 4;
     }
 
-
-
     @Override
     public String getColumnName(int columnIndex) {
         switch (columnIndex) {

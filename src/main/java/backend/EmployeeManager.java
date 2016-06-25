@@ -40,6 +40,8 @@ public class EmployeeManager {
             id++;
         }
 
+        employee.setId(id);
+
         String Query = "update insert"
         + "<employee>"
         + "     <eid>"+ id +"</eid>"

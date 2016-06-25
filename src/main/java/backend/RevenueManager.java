@@ -171,13 +171,4 @@ public class RevenueManager {
 
         return revenue;
     }
-
-    public void generateDocBook(Employee employee,LocalDate from,LocalDate to) throws XMLDBException {
-        
-        XMLResource res = null;
-        res = (XMLResource)collection.createResource(null, "XMLResource");
-
-        res.setContent(new CreateXMLImpl().createXML(employee,from,to,findRevenuesByEmployee(employee)));
-        collection.storeResource(res);
-    }
 }

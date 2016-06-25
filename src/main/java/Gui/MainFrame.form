@@ -201,15 +201,13 @@
                     <children>
                       <grid id="83f98" layout-manager="FormLayout">
                         <rowspec value="center:d:grow"/>
-                        <colspec value="fill:253px:noGrow"/>
+                        <colspec value="fill:390px:noGrow"/>
                         <colspec value="left:4dlu:noGrow"/>
-                        <colspec value="fill:253px:noGrow"/>
-                        <colspec value="left:4dlu:noGrow"/>
-                        <colspec value="fill:253px:noGrow"/>
+                        <colspec value="fill:max(d;4px):noGrow"/>
+                        <colspec value="fill:390px:noGrow"/>
                         <colgroup>
                           <member index="1"/>
-                          <member index="3"/>
-                          <member index="5"/>
+                          <member index="4"/>
                         </colgroup>
                         <constraints>
                           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -219,7 +217,7 @@
                         <children>
                           <component id="32426" class="javax.swing.JButton" binding="generateInvoiceButton">
                             <constraints>
-                              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                               <forms/>
                             </constraints>
                             <properties>
@@ -236,17 +234,6 @@
                             <properties>
                               <icon value="add.png"/>
                               <text value="View"/>
-                            </properties>
-                          </component>
-                          <component id="109c8" class="javax.swing.JButton" binding="deleteRevenueButton">
-                            <constraints>
-                              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                              <forms/>
-                            </constraints>
-                            <properties>
-                              <enabled value="false"/>
-                              <icon value="delete.png"/>
-                              <text value="Delete"/>
                             </properties>
                           </component>
                         </children>

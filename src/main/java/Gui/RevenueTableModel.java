@@ -17,12 +17,14 @@ import java.util.List;
 public class RevenueTableModel extends AbstractTableModel {
 
     private final RevenueManager revenueManager;
+    private final EmployeeManager employeeManager;
     private List<Revenue> revenues = new ArrayList<Revenue>();
     private ReadAllSwingWorker readAllSwingWorker;
 
-    public RevenueTableModel(RevenueManager revenueManager) {
+    public RevenueTableModel(RevenueManager revenueManager, EmployeeManager employeeManager) {
 
         this.revenueManager = revenueManager;
+        this.employeeManager = employeeManager;
         readAllSwingWorker = new ReadAllSwingWorker(revenueManager);
         readAllSwingWorker.execute();
 
@@ -123,14 +125,14 @@ public class RevenueTableModel extends AbstractTableModel {
             }
         }
     }
-/*
-    private class FindSwingWorker extends SwingWorker<List<Revenue>, Void> {
+
+    private class ListSwingWorker extends SwingWorker<List<Revenue>, Void> {
 
         private final RevenueManager revenueManager;
         private final EmployeeManager employeeManager;
         private final int row;
 
-        public FindSwingWorker(RevenueManager revenueManager, EmployeeManager employeeManager, int row) {
+        public ListSwingWorker(RevenueManager revenueManager, EmployeeManager employeeManager, int row) {
             this.revenueManager = revenueManager;
             this.employeeManager = employeeManager;
             this.row = row;
@@ -151,82 +153,83 @@ public class RevenueTableModel extends AbstractTableModel {
             }
         }
     }
+    /*
+        private class FindSwingWorker extends SwingWorker<List<Revenue>, Void> {
 
-    private class ListSwingWorker extends SwingWorker<List<Revenue>, Void> {
+            private final RevenueManager revenueManager;
+            private final LocalDate from;
+            private final LocalDate to;
+            private final int row;
 
-        private final RevenueManager revenueManager;
-        private final LocalDate from;
-        private final LocalDate to;
-        private final int row;
+            public FindSwingWorker(RevenueManager revenueManager, LocalDate from, LocalDate to, int row) {
+                this.revenueManager = revenueManager;
+                this.from = from;
+                this.to = to;
+                this.row = row;
+            }
 
-        public ListSwingWorker(RevenueManager revenueManager, LocalDate from, LocalDate to, int row) {
-            this.revenueManager = revenueManager;
-            this.from = from;
-            this.to = to;
-            this.row = row;
-        }
+            @Override
+            protected List<Revenue> doInBackground() throws Exception {
+                return revenueManager.listRevenuesByDate(employeeManager.getEmployee((Long) getValueAt(row, 0)), from, to);
+            }
 
-        @Override
-        protected List<Revenue> doInBackground() throws Exception {
-            return revenueManager.listRevenuesByDate(employeeManager.getEmployee((Long) getValueAt(row, 0)), from, to);
-        }
-
-        @Override
-        protected void done() {
-            try {
-                revenues = get();
-                fireTableDataChanged();
-            } catch (Exception e) {
-                e.printStackTrace();
+            @Override
+            protected void done() {
+                try {
+                    revenues = get();
+                    fireTableDataChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-    }
 
-    private class GenerateSwingWorker extends SwingWorker<List<Revenue>, Void> {
+        private class GenerateSwingWorker extends SwingWorker<List<Revenue>, Void> {
 
-        private final RevenueManager revenueManager;
-        private final LocalDate from;
-        private final LocalDate to;
-        private final InvoiceTableModel invoiceTableModel;
+            private final RevenueManager revenueManager;
+            private final LocalDate from;
+            private final LocalDate to;
+            private final InvoiceTableModel invoiceTableModel;
 
-        public GenerateSwingWorker(RevenueManager revenueManager, LocalDate from, LocalDate to, InvoiceTableModel invoiceTableModel) {
-            this.revenueManager = revenueManager;
-            this.from = from;
-            this.to = to;
-            this.invoiceTableModel = invoiceTableModel;
-        }
+            public GenerateSwingWorker(RevenueManager revenueManager, LocalDate from, LocalDate to, InvoiceTableModel invoiceTableModel) {
+                this.revenueManager = revenueManager;
+                this.from = from;
+                this.to = to;
+                this.invoiceTableModel = invoiceTableModel;
+            }
 
-        @Override
-        protected Invoice doInBackground() throws Exception {
-            Invoice invoice = revenueManager.createInvoice(from, to);
-            invoiceTableModel.addRow(invoice);
-            return invoice;
-        }
+            @Override
+            protected Invoice doInBackground() throws Exception {
+                Invoice invoice = revenueManager.createInvoice(from, to);
+                invoiceTableModel.addRow(invoice);
+                return invoice;
+            }
 
-        @Override
-        protected void done() {
-            try {
-                revenues = get();
-                fireTableDataChanged();
-            } catch (Exception e) {
-                e.printStackTrace();
+            @Override
+            protected void done() {
+                try {
+                    revenues = get();
+                    fireTableDataChanged();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-    }
-*/
+    */
     void addRow(Revenue revenue) {
         AddSwingWorker addSwingWorker = new AddSwingWorker(revenueManager, revenue);
         addSwingWorker.execute();
     }
-/*
+
     void listRows(int row) {
-        FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManager, employeeManager, row);
-        findSwingWorker.execute();
+        ListSwingWorker listSwingWorker = new ListSwingWorker(revenueManager, employeeManager, row);
+        listSwingWorker.execute();
     }
 
+/*
     void findRows(LocalDate from, LocalDate to, int row) {
-        ListSwingWorker listSwingWorker = new ListSwingWorker(revenueManager, from, to, row);
-        listSwingWorker.execute();
+        FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManager, from, to, row);
+        findSwingWorker.execute();
     }
 
     void generateRows(LocalDate from, LocalDate to, InvoiceTableModel invoiceTableModel) {

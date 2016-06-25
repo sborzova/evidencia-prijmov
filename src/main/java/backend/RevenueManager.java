@@ -40,11 +40,11 @@ public class RevenueManager {
         }
 
         revenue.setId(id);
-
+   
         String Query = "update insert"
                 + "<revenue>"
-                + "     <eid>"+ revenue.getId() +"</eid>"
-                + "     <rid>"+ revenue.getEmployeeId() +"</rid>"
+                + "     <rid>"+ revenue.getId() +"</rid>"
+                + "     <eid>"+ revenue.getEmployeeId() +"</eid>"
                 + "     <hours>"+ revenue.getHours() +"</hours>"
                 + "     <totalSalary>"+ revenue.getTotalSalary() +"</totalSalary>"
                 + "     <drawInvoiceDate>"+ revenue.getDrawInvoiceDate() +"</drawInvoiceDate>"
@@ -123,7 +123,7 @@ public class RevenueManager {
 
         return revenue;
     }
-    
+
     public List<Revenue> findRevenuesByEmployee(Employee employee) throws XMLDBException {
 
         List<Revenue> revenues = new ArrayList<Revenue>();

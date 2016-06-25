@@ -13,16 +13,15 @@ import java.util.List;
  * @author Marek Scholtz
  * @version 2016.06.23
  */
-public class EmployeeTableModel extends AbstractTableModel {
+class EmployeeTableModel extends AbstractTableModel {
 
     private final EmployeeManager employeeManager;
     private List<Employee> employees = new ArrayList<Employee>();
-    private ReadAllSwingWorker readAllSwingWorker;
 
-    public EmployeeTableModel(EmployeeManager employeeManager) {
+    EmployeeTableModel(EmployeeManager employeeManager) {
 
         this.employeeManager = employeeManager;
-        readAllSwingWorker = new ReadAllSwingWorker(employeeManager);
+        ReadAllSwingWorker readAllSwingWorker = new ReadAllSwingWorker(employeeManager);
         readAllSwingWorker.execute();
 
     }
@@ -33,6 +32,24 @@ public class EmployeeTableModel extends AbstractTableModel {
 
     public int getColumnCount() {
         return 4;
+    }
+
+
+
+    @Override
+    public String getColumnName(int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return "ID";
+            case 1:
+                return "Forename";
+            case 2:
+                return "Surname";
+            case 3:
+                return "Hourly wage";
+            default:
+                throw new IllegalArgumentException("Column index out of range");
+        }
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -125,7 +142,7 @@ public class EmployeeTableModel extends AbstractTableModel {
             fireTableRowsDeleted(row, row);
         }
     }
-
+/*
     private class createStatementOfRevenueSwingWorker extends SwingWorker <Void, Void> {
 
         private final EmployeeManager employeeManager;
@@ -148,6 +165,8 @@ public class EmployeeTableModel extends AbstractTableModel {
         }
     }
 
+   */
+
     void addRow(Employee employee) {
         AddSwingWorker addSwingWorker = new AddSwingWorker(employeeManager, employee);
         addSwingWorker.execute();
@@ -158,10 +177,12 @@ public class EmployeeTableModel extends AbstractTableModel {
         deleteSwingWorker.execute();
     }
 
+    /*
     void createStatementOfRevenueOfRow(EmployeeManager employeeManager, RevenueTableModel revenueTableModel, Revenue revenue, int row) {
         EmployeeTableModel.createStatementOfRevenueSwingWorker createStatementOfRevenueSwingWorker = new createStatementOfRevenueSwingWorker(employeeManager, revenueTableModel, revenue, row);
         createStatementOfRevenueSwingWorker.execute();
     }
+    */
 
 
 }

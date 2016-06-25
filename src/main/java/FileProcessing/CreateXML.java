@@ -3,6 +3,7 @@ package FileProcessing;
 import backend.Employee;
 import backend.Revenue;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,5 +12,14 @@ import java.util.List;
  */
 public interface CreateXML {
 
-    void createXML(Employee employee, LocalDate fromDate, LocalDate toDate, List<Revenue> revenuesList);
+    /** Creates invoice XML and then converts to DOCBOOK from the given data
+     *  using method toDbk() from class ToDbkImpl
+     *
+     * @param employeeData Employee
+     * @param fromDate LocalDate
+     * @param toDate LocalDate
+     * @param revenuesList list of revenues for Employee in period between fromDate to toDate
+     * @return docbook file with processed data
+     */
+    File createXML(Employee employeeData, LocalDate fromDate, LocalDate toDate, List<Revenue> revenuesList);
 }

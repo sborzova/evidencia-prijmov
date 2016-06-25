@@ -36,15 +36,19 @@ public class ToPDFImpl {
     }*/
 
     /**
-     * Method to convert the given XML to PDF
-     * @throws IOException
-     * @throws FOPException
-     * @throws TransformerException
-     * @param file
+     * final variable represents path to invoice transformation template xsl path
      */
+    private static final String TEMPLATE_XSL_PATH = ".\\src\\main\\resources\\invoiceTemplate.xsl";
+
+    /**
+     * final variable represents path to invoice pdf file
+     */
+    private static final String INVOICE_PDF_PATH = ".\\src\\main\\resources\\Invoice.pdf";
+
+
     public void convertToPDF(File file)  throws IOException, FOPException, TransformerException {
 
-        File xsltFile = new File(".\\src\\main\\resources\\invoiceTemplate.xsl");
+        File xsltFile = new File(TEMPLATE_XSL_PATH);
 
         StreamSource xmlSource = new StreamSource(file);
 
@@ -52,7 +56,7 @@ public class ToPDFImpl {
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
 
         OutputStream out;
-        out = new java.io.FileOutputStream(".\\src\\main\\resources\\Invoice.pdf");
+        out = new java.io.FileOutputStream(INVOICE_PDF_PATH);
 
         try {
 
@@ -75,6 +79,7 @@ public class ToPDFImpl {
      * @throws FOPException
      * @throws TransformerException
      */
+    /*
     public void convertToFO()  throws IOException, FOPException, TransformerException {
 
         File xsltFile = new File(".\\src\\main\\resources\\invoiceTemplate.xsl");
@@ -97,5 +102,5 @@ public class ToPDFImpl {
         } finally {
             out.close();
         }
-    }
+    }*/
 }

@@ -1,9 +1,12 @@
 package backend;
 
+import FileProcessing.CreateXMLImpl;
 import org.exist.xmldb.EXistResource;
 import org.xmldb.api.base.*;
+import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -107,7 +110,16 @@ public class RevenueManager {
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
 
-        String xpath = "/revenues/revenue[eid="+employee.getId()+" and drawInvoiceDate>="+from+" and drawInvoiceDate<="+to+"]";
+        String f = from.toString();
+        f = f.replace("-","");
+        Integer.parseInt(f);
+
+        String t = to.toString();
+        t = t.replace("-","");
+        Integer.parseInt(t);
+
+        String xpath = "/revenues/revenue[eid="+employee.getId()+" and number(translate(drawInvoiceDate/text(),'-','')) >="+f+" " +
+                "and number(translate(drawInvoiceDate/text(),'-','')) <="+t+"]/child::node()/text()";
         ResourceSet result = xpqs.query(xpath);
         ResourceIterator iterator = result.getIterator();
 

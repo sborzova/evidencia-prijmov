@@ -151,13 +151,4 @@ class EmployeeTableModel extends AbstractTableModel {
         DeleteSwingWorker deleteSwingWorker = new DeleteSwingWorker(employeeManager, row);
         deleteSwingWorker.execute();
     }
-
-    /*
-    void createStatementOfRevenueOfRow(EmployeeManager employeeManager, RevenueTableModel revenueTableModel, Revenue revenue, int row) {
-        EmployeeTableModel.createStatementOfRevenueSwingWorker createStatementOfRevenueSwingWorker = new createStatementOfRevenueSwingWorker(employeeManager, revenueTableModel, revenue, row);
-        createStatementOfRevenueSwingWorker.execute();
-    }
-    */
-
-
 }

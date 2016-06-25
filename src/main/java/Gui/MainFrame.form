@@ -242,17 +242,17 @@
                         <rowspec value="center:max(d;4px):noGrow"/>
                         <rowspec value="top:4dlu:noGrow"/>
                         <rowspec value="center:d:grow"/>
-                        <colspec value="fill:max(d;4px):noGrow"/>
+                        <colspec value="fill:110px:noGrow"/>
                         <colspec value="left:4dlu:noGrow"/>
-                        <colspec value="fill:211px:grow"/>
+                        <colspec value="fill:147px:grow"/>
                         <colspec value="left:4dlu:noGrow"/>
-                        <colspec value="fill:max(d;4px):noGrow"/>
+                        <colspec value="fill:80px:noGrow"/>
                         <colspec value="left:4dlu:noGrow"/>
-                        <colspec value="fill:max(d;4px):noGrow"/>
+                        <colspec value="fill:110px:noGrow"/>
                         <colspec value="left:4dlu:noGrow"/>
-                        <colspec value="fill:211px:grow"/>
+                        <colspec value="fill:147px:grow"/>
                         <colspec value="left:4dlu:noGrow"/>
-                        <colspec value="fill:max(d;4px):noGrow"/>
+                        <colspec value="fill:80px:noGrow"/>
                         <colgroup>
                           <member index="3"/>
                           <member index="9"/>
@@ -414,14 +414,16 @@
                               </model>
                             </properties>
                           </component>
-                          <component id="e7bb5" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+                          <component id="e7bb5" class="javax.swing.JTextField" binding="revenuesInTotalTextField">
                             <constraints>
                               <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                 <preferred-size width="150" height="-1"/>
                               </grid>
                               <forms defaultalign-horz="false"/>
                             </constraints>
-                            <properties/>
+                            <properties>
+                              <enabled value="false"/>
+                            </properties>
                           </component>
                         </children>
                       </grid>

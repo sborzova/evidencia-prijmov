@@ -1,14 +1,13 @@
 package Gui;
 
-import backend.EmployeeManager;
-import backend.Revenue;
-import backend.RevenueManager;
+import backend.*;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Marek Scholtz
@@ -19,6 +18,8 @@ public class RevenueTableModel extends AbstractTableModel {
     private final RevenueManager revenueManager;
     private final EmployeeManager employeeManager;
     private List<Revenue> revenues = new ArrayList<Revenue>();
+    private Integer total;
+    private Invoice invoice;
     private ReadAllSwingWorker readAllSwingWorker;
 
     public RevenueTableModel(RevenueManager revenueManager, EmployeeManager employeeManager) {
@@ -185,39 +186,37 @@ public class RevenueTableModel extends AbstractTableModel {
                 }
             }
         }
-/*
-        private class GenerateSwingWorker extends SwingWorker<List<Revenue>, Void> {
 
-            private final RevenueManager revenueManager;
-            private final LocalDate from;
-            private final LocalDate to;
-            private final InvoiceTableModel invoiceTableModel;
+    private class RevenuesInTotalSwingWorker extends SwingWorker<Integer, Void> {
 
-            public GenerateSwingWorker(RevenueManager revenueManager, LocalDate from, LocalDate to, InvoiceTableModel invoiceTableModel) {
-                this.revenueManager = revenueManager;
-                this.from = from;
-                this.to = to;
-                this.invoiceTableModel = invoiceTableModel;
+        private final JTable revenueTable;
+        private final JTextField revenuesInTotalTextField;
+        private Integer sum = 0;
+
+        public RevenuesInTotalSwingWorker(JTable revenueTable, JTextField revenuesInTotalTextField) {
+            this.revenueTable = revenueTable;
+            this.revenuesInTotalTextField = revenuesInTotalTextField;
+        }
+
+        @Override
+        protected Integer doInBackground() throws Exception {
+            for (int i = 0; i < revenueTable.getRowCount(); i++) {
+                sum += Integer.parseInt(revenueTable.getValueAt(i,3).toString());
             }
+            return sum;
+        }
 
-            @Override
-            protected Invoice doInBackground() throws Exception {
-                Invoice invoice = revenueManager.createInvoice(from, to);
-                invoiceTableModel.addRow(invoice);
-                return invoice;
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    revenues = get();
-                    fireTableDataChanged();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        @Override
+        protected void done() {
+            try {
+                total = get();
+                revenuesInTotalTextField.setText(total.toString());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
             }
         }
-    */
+    }
+
     void addRow(Revenue revenue) {
         AddSwingWorker addSwingWorker = new AddSwingWorker(revenueManager, revenue);
         addSwingWorker.execute();
@@ -228,16 +227,13 @@ public class RevenueTableModel extends AbstractTableModel {
         listSwingWorker.execute();
     }
 
-
     void findRows(LocalDate from, LocalDate to, Long id) {
         FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManager, employeeManager, from, to, id);
         findSwingWorker.execute();
     }
-/*
-    void generateRows(LocalDate from, LocalDate to, InvoiceTableModel invoiceTableModel) {
-        GenerateSwingWorker generateSwingWorker = new GenerateSwingWorker(revenueManager, from, to, invoiceTableModel);
-        generateSwingWorker.execute();
+    
+    void revenuesInTotal(JTable revenueTable, JTextField revenuesInTotalTextField) {
+        RevenuesInTotalSwingWorker revenuesSwingWorker = new RevenuesInTotalSwingWorker(revenueTable, revenuesInTotalTextField);
+        revenuesSwingWorker.execute();
     }
-*/
-
 }

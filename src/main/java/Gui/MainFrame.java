@@ -1,8 +1,6 @@
 package Gui;
 
-import backend.Employee;
-import backend.EmployeeManager;
-import backend.RevenueManager;
+import backend.*;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
@@ -41,11 +39,11 @@ public class MainFrame {
     private JPanel employeePanel;
     private JTextField hourlyWageTextField;
     private JPanel revenuePanel;
-    private JTextField textField1;
+    private JTextField revenuesInTotalTextField;
     private JLabel hourlyWageLabel;
     private static EmployeeManager employeeManager;
     private static RevenueManager revenueManager;
-    //private static InvoiceManager invoiceManager;
+    private static InvoiceManager invoiceManager;
     private static String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/db/RevenueEvidence";
     private static Collection collection = null;
 
@@ -74,7 +72,7 @@ public class MainFrame {
 
         employeeManager = new EmployeeManager(collection);
         revenueManager = new RevenueManager(collection);
-        //invoiceManager = new InvoiceManager(collection);
+        invoiceManager = new InvoiceManager(collection);
     }
 
     public static void main(String[] args) throws Exception {
@@ -91,7 +89,7 @@ public class MainFrame {
 
         employeeTable.setModel(new EmployeeTableModel(employeeManager));
         revenueTable.setModel(new RevenueTableModel(revenueManager, employeeManager));
-
+        invoiceTable.setModel(new InvoiceTableModel(invoiceManager));
 
         addEmployeeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -134,6 +132,7 @@ public class MainFrame {
                 revenueTableModel.listRows((Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
                 deleteEmployeeButton.setEnabled(true);
                 createStatementOfRevenueButton.setEnabled(true);
+                revenueTableModel.revenuesInTotal(revenueTable, revenuesInTotalTextField);
             }
         });
 
@@ -146,26 +145,23 @@ public class MainFrame {
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
                 revenueTableModel.findRows(LocalDate.of(fromYear, fromMonth, 1), LocalDate.of(toYear, toMonth, 1), (Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
+                revenueTableModel.revenuesInTotal(revenueTable, revenuesInTotalTextField);
             }
         });
 
-        /*
         generateInvoiceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                Invoice invoice = new Invoice();
                 int fromMonth = fromMonthComboBox.getSelectedIndex() + 1;
                 int fromYear = Integer.parseInt((String) fromYearComboBox.getSelectedItem());
                 int toMonth = toMonthComboBox.getSelectedIndex() + 1;
                 int toYear = Integer.parseInt((String) toYearComboBox.getSelectedItem());
-                RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
-                //InvoiceTableModel invoiceTableModel = (InvoiceTableModel) invoiceTable.getModel();
-                //revenueTableModel.generateRows(LocalDate.of(fromYear, fromMonth, 1), LocalDate.of(toYear, toMonth, 1), invoiceTableModel);
-            }
-        });
-
-        revenueTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                deleteRevenueButton.setEnabled(true);
+                EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
+                InvoiceTableModel invoiceTableModel = (InvoiceTableModel) invoiceTable.getModel();
+                invoice.setEmployeeID((Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
+                invoice.setFrom(LocalDate.of(fromYear, fromMonth, 1));
+                invoice.setTo(LocalDate.of(toYear, toMonth, 1));
+                invoiceTableModel.addRow(invoice);
             }
         });
 
@@ -179,12 +175,10 @@ public class MainFrame {
         exportToPDFButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 invoiceTable.clearSelection();
-                //InvoiceTableModel invoiceTableModel = (InvoiceTableModel) invoiceTable.getModel();
-                //invoiceTableModel.exportToPDF(invoiceTable.getSelectedRow());
+                InvoiceTableModel invoiceTableModel = (InvoiceTableModel) invoiceTable.getModel();
+                invoiceTableModel.exportToPDF((Long) invoiceTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
                 exportToPDFButton.setEnabled(false);
             }
         });
-        */
-
     }
 }

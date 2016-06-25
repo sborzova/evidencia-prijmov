@@ -1,8 +1,12 @@
 package backend;
 
+import org.exist.xmldb.EXistResource;
 import org.xmldb.api.base.*;
 import org.xmldb.api.modules.XPathQueryService;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,14 +53,72 @@ public class RevenueManager {
         xpqs.query(Query);
     }
 
-
-    /*
     public List<Revenue> listAllRevenues() {
 
+        List<Revenue> revenues = new ArrayList<Revenue>();
+
+        try {
+            XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+            xpqs.setProperty("indent", "yes");
+
+            String xpath = "/revenues/revenue/child::node()/text()";
+
+            ResourceSet result = xpqs.query(xpath);
+            ResourceIterator i = result.getIterator();
+
+            while(i.hasMoreResources()) {
+                revenues.add(setUpRevenue(i));
+            }
+
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        } finally {
+            if(collection != null) {
+                try { collection.close(); } catch(XMLDBException xe) {xe.printStackTrace();}
+            }
+        }
+
+        return revenues;
     }
 
-    public void createRevenue() {
+    public Revenue setUpRevenue(ResourceIterator i) throws XMLDBException {
 
+        Revenue revenue = new Revenue();
+        Resource res = null;
+
+        try {
+            res = i.nextResource();
+            revenue.setId(Long.parseLong(res.getContent().toString()));
+        } finally {
+            try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+        }
+        try {
+            res = i.nextResource();
+            revenue.setEmployeeId(Long.parseLong(res.getContent().toString()));
+        } finally {
+            try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+        }
+        try {
+            res = i.nextResource();
+            revenue.setHours(Integer.parseInt(res.getContent().toString()));
+        } finally {
+            try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+        }
+        try {
+            res = i.nextResource();
+            revenue.setTotalSalary(new BigDecimal(res.getContent().toString()));
+        } finally {
+            try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+        }
+        try {
+            res = i.nextResource();
+            revenue.setDrawInvoiceDate((res.getContent().toString()));
+        } finally {
+
+            try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+        }
+
+        return revenue;
     }
 
     public List<Revenue> findRevenuesByEmployee(Employee employee) {
@@ -67,6 +129,6 @@ public class RevenueManager {
 
     }
 
-*/
+
 
 }

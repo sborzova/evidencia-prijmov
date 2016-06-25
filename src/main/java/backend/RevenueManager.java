@@ -6,6 +6,7 @@ import org.xmldb.api.modules.XPathQueryService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,16 +112,19 @@ public class RevenueManager {
             try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
         }
         try {
-            res = i.nextResource();
-            revenue.setDrawInvoiceDate((res.getContent().toString()));
-        } finally {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+            LocalDate date;
 
+            res = i.nextResource();
+            revenue.setDrawInvoiceDate(LocalDate.parse(res.getContent().toString(), formatter));
+        } finally {
             try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
         }
 
         return revenue;
     }
 
+    /*
     public List<Revenue> findRevenuesByEmployee(Employee employee) {
 
     }
@@ -128,7 +132,7 @@ public class RevenueManager {
     public List<Revenue> listRevenuesByDate() {
 
     }
-
+    */
 
 
 }

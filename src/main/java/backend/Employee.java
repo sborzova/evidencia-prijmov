@@ -24,7 +24,6 @@ public class Employee {
 
     }
 
-
     public String getSurname() {
         return surname;
     }

@@ -26,7 +26,7 @@ public class EmployeeManager {
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
-        ResourceSet result = xpqs.query("string(/employees/employee[last()]/@id)");
+        ResourceSet result = xpqs.query("string(/employees/employee[last()]/eid)");
 
         ResourceIterator i = result.getIterator();
         Resource res;
@@ -41,7 +41,8 @@ public class EmployeeManager {
         }
 
         String Query = "update insert"
-        + "<employee eid="+ id +">"
+        + "<employee>"
+        + "     <eid>"+ id +"</eid>"
         + "     <name>"+ forename +"</name>"
         + "     <surname>"+ surname +"</surname>"
         + "     <hourlyWage>"+ wage +"</hourlyWage>"
@@ -57,7 +58,7 @@ public class EmployeeManager {
 
         Long id = employee.getId();
 
-        String Query = "update delete /employees/employee[@id="+1+"]";
+        String Query = "update delete /employees/employee[@id="+id+"]";
 
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
@@ -69,6 +70,7 @@ public class EmployeeManager {
 
     }
 
+    /*
     public List<Employee> listAllEmployees() {
 
         List<Employee> employees = new ArrayList<Employee>();
@@ -102,7 +104,7 @@ public class EmployeeManager {
                     }
                     try {
                         res = i.nextResource();
-                        employee.setHourlyWage(new BigDecimal( res.getContent().toString()));
+                        employee.setHourlyWage(new BigDecimal(res.getContent().toString()));
 
                     } finally {
 
@@ -122,7 +124,7 @@ public class EmployeeManager {
 
         return employees;
     }
-
+    */
     public Employee getEmployee(Long id) throws XMLDBException {
 
         Employee employee = new Employee();
@@ -130,7 +132,7 @@ public class EmployeeManager {
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
 
-        String xpath = "/employees/employee[@id="+id+"]/child::node()/text()";
+        String xpath = "/employees/employee/id/text()="+id+"/child::node()/text()";
 
         ResourceSet result = xpqs.query(xpath);
         ResourceIterator i = result.getIterator();

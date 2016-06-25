@@ -12,22 +12,33 @@ import java.io.File;
  */
 
 public class ToDkbImpl implements ToDkb{
+
     /**
-     *
-     * @return
-     * @throws TransformerException
+     * final variable represents path to revenue xml file
      */
+    private static final String REVENUE_XML_PATH = ".\\src\\main\\resources\\revenueXml.xml";
+
+    /**
+     * final variable represents path to transformation template xsl file
+     */
+    private static final String TEMPLATE_XSL_PATH = ".\\src\\main\\resources\\xmlTemplate.xsl";
+
+    /**
+     * final variable represents path to invoice docbook file
+     */
+    private static final String INVOICE_XML_PATH = ".\\src\\main\\resources\\Invoice.xml";
+
+
     @Override
     public File toDbk() throws TransformerException {
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer xsltProc = tf.newTransformer(
-                new StreamSource(new File(".\\src\\main\\resources\\xmlTemplate.xsl")));
+                new StreamSource(new File(TEMPLATE_XSL_PATH)));
 
         xsltProc.transform(
-                new StreamSource(new File(".\\src\\main\\resources\\revenueXml.xml")),
-                new StreamResult(new File(".\\src\\main\\resources\\Invoice.xml")));
+                new StreamSource(new File(REVENUE_XML_PATH)),
+                new StreamResult(new File(INVOICE_XML_PATH)));
 
-        //return new File(url.getPath());
-        return new File(".\\src\\main\\resources\\Invoice.xml");
+        return new File(INVOICE_XML_PATH);
     }
 }

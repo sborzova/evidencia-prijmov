@@ -10,6 +10,7 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.xml.transform.OutputKeys;
 import java.awt.event.*;
 import java.math.BigDecimal;
@@ -107,6 +108,8 @@ public class MainFrame {
             public void actionPerformed(ActionEvent e) {
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 employeeTableModel.deleteRow(employeeTable.getSelectedRow());
+                DefaultTableModel defaultTableModel = (DefaultTableModel) revenueTable.getModel();
+                defaultTableModel.setRowCount(0);
                 addEmployeeButton.setEnabled(true);
                 deleteEmployeeButton.setEnabled(false);
                 createStatementOfRevenueButton.setEnabled(false);
@@ -131,7 +134,6 @@ public class MainFrame {
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
                 revenueTableModel.listRows((Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
-                addEmployeeButton.setEnabled(false);
                 deleteEmployeeButton.setEnabled(true);
                 createStatementOfRevenueButton.setEnabled(true);
             }

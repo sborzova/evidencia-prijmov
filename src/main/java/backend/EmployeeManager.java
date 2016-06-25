@@ -20,10 +20,6 @@ public class EmployeeManager {
 
     public void createEmployee(Employee employee) throws XMLDBException {
 
-        String forename = employee.getForename();
-        String surname = employee.getSurname();
-        String wage = employee.getHourlyWage().toString();
-
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
         ResourceSet result = xpqs.query("string(/employees/employee[last()]/eid)");
@@ -42,18 +38,16 @@ public class EmployeeManager {
 
         employee.setId(id);
 
-        String Query = "update insert"
+        String insertQuery = "update insert"
         + "<employee>"
         + "     <eid>"+ id +"</eid>"
-        + "     <name>"+ forename +"</name>"
-        + "     <surname>"+ surname +"</surname>"
-        + "     <hourlyWage>"+ wage +"</hourlyWage>"
+        + "     <name>"+ employee.getForename() +"</name>"
+        + "     <surname>"+ employee.getSurname() +"</surname>"
+        + "     <hourlyWage>"+ employee.getHourlyWage() +"</hourlyWage>"
         + "</employee>"
         + "into /employees";
 
-        XPathQueryService xpqss = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
-        xpqss.setProperty("indent", "yes");
-        xpqss.query(Query);
+        xpqs.query(insertQuery);
     }
 
     public void deleteEmployee(Employee employee) throws XMLDBException {
@@ -67,22 +61,6 @@ public class EmployeeManager {
         xpqs.query(Query);
     }
 
-    /*
-    public void createStatementOfRevenue(Employee employee, Revenue revenue) {
-
-        String Query = "update insert"
-        + "<employee>"
-        + "     <eid>"+ employee.getId() +"</eid>"
-        + "     <rid>"+ revenue.getEmployeeId() +"</rid>"
-        + "     <surname>"+ surname +"</surname>"
-        + "     <hourlyWage>"+ wage +"</hourlyWage>"
-        + "</employee>"
-        + "into /employees";
-
-
-    }
-    */
-
     public List<Employee> listAllEmployees() {
 
         List<Employee> employees = new ArrayList<Employee>();
@@ -95,41 +73,9 @@ public class EmployeeManager {
 
             ResourceSet result = xpqs.query(xpath);
             ResourceIterator i = result.getIterator();
-            Resource res = null;
 
             while(i.hasMoreResources()) {
-
-                Employee employee = new Employee();
-
-                    try {
-                        res = i.nextResource();
-                        employee.setId(Long.parseLong(res.getContent().toString()));
-                    } finally {
-                        try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
-                    }
-                    try {
-                        res = i.nextResource();
-                        employee.setForename(res.getContent().toString());
-                    } finally {
-                        try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
-                    }
-                    try {
-                        res = i.nextResource();
-                        employee.setSurname(res.getContent().toString());
-                    } finally {
-
-                        try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
-                    }
-                    try {
-                        res = i.nextResource();
-                        employee.setHourlyWage(new BigDecimal(res.getContent().toString()));
-
-                    } finally {
-
-                        try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
-                    }
-
-                employees.add(employee);
+                employees.add(setUpEmployee(i));
             }
             
         } catch (XMLDBException e) {
@@ -145,15 +91,20 @@ public class EmployeeManager {
 
     public Employee getEmployee(Long id) throws XMLDBException {
 
-        Employee employee = new Employee();
-
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
 
         String xpath = "/employees/employee[eid="+id+"]/child::node()/text()";
 
         ResourceSet result = xpqs.query(xpath);
-        ResourceIterator i = result.getIterator();
+        ResourceIterator iterator = result.getIterator();
+
+        return setUpEmployee(iterator);
+    }
+
+    public Employee setUpEmployee(ResourceIterator i) throws XMLDBException {
+
+        Employee employee = new Employee();
         Resource res = null;
 
         try {
@@ -177,11 +128,8 @@ public class EmployeeManager {
         }
         try {
             res = i.nextResource();
-            String s = res.getContent().toString();
             employee.setHourlyWage(new BigDecimal(res.getContent().toString()));
-
         } finally {
-
             try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
         }
 

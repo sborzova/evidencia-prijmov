@@ -132,9 +132,9 @@ public class MainFrame {
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
                 revenueTableModel.listRows((Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
-                revenuesInTotal();
                 deleteEmployeeButton.setEnabled(true);
                 createStatementOfRevenueButton.setEnabled(true);
+                revenueTableModel.revenuesInTotal(revenueTable, revenuesInTotalTextField);
             }
         });
 
@@ -147,7 +147,7 @@ public class MainFrame {
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
                 revenueTableModel.findRows(LocalDate.of(fromYear, fromMonth, 1), LocalDate.of(toYear, toMonth, 1), (Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
-                revenuesInTotal();
+                revenueTableModel.revenuesInTotal(revenueTable, revenuesInTotalTextField);
             }
         });
 
@@ -191,13 +191,4 @@ public class MainFrame {
 
 
     }
-
-    private void revenuesInTotal() {
-        Integer amount = 0;
-        for (int i = 0; i < revenueTable.getRowCount(); i++) {
-            amount += Integer.parseInt(revenueTable.getValueAt(i, 3).toString());
-        }
-        revenuesInTotalTextField.setText(amount.toString());
-    }
-
 }

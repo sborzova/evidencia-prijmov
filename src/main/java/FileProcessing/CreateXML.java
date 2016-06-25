@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface CreateXML {
 
-    public void createXML(Employee employee, LocalDate fromDate, LocalDate toDate, List<Revenue> revenuesList);
+    void createXML(Employee employee, LocalDate fromDate, LocalDate toDate, List<Revenue> revenuesList);
 }

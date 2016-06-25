@@ -7,6 +7,7 @@ import org.xmldb.api.base.XMLDBException;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,12 @@ public class InvoiceManager {
         xpqs.setProperty("indent", "yes");
         ResourceSet result = xpqs.query("string(/revenues/revenue[last()]/rid)");
 
+
+
+
+
     }
-    
+
     public List<Invoice> listAllInvoices() {
         List<Invoice> invoices = new ArrayList<>();
         
@@ -44,12 +49,23 @@ public class InvoiceManager {
         return invoice;
     }
 
-    public void generateDocBook(Employee employee, LocalDate from, LocalDate to) throws XMLDBException {
+    public void generateDocBook(Invoice invoice) throws XMLDBException {
+
+
+
 
         XMLResource res = null;
         res = (XMLResource)collection.createResource(null, "XMLResource");
 
-        res.setContent(new CreateXMLImpl().createXML(employee,from,to, new RevenueManager(collection).findRevenuesByEmployee(employee)));
+
+        Employee employee = new EmployeeManager(collection).getEmployee(invoice.getEmployeeID());
+
+        File f = new CreateXMLImpl().createXML(employee,invoice.getFrom(),invoice.getTo(),
+                new RevenueManager(collection).findRevenuesByEmployee(employee));
+        File newFile = new File("ahoj.dbk");
+        f.renameTo(newFile);
+
+        res.setContent(newFile);
         collection.storeResource(res);
     }
 }

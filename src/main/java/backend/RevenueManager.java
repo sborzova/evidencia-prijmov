@@ -21,7 +21,7 @@ public class RevenueManager {
         this.collection = collection;
     }
 
-    public void createStatementOfRevenue(Employee employee, Revenue revenue) throws XMLDBException {
+    public void createRevenue(Revenue revenue) throws XMLDBException {
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
@@ -43,7 +43,7 @@ public class RevenueManager {
 
         String Query = "update insert"
                 + "<employee>"
-                + "     <eid>"+ employee.getId() +"</eid>"
+                + "     <eid>"+ revenue.getId() +"</eid>"
                 + "     <rid>"+ revenue.getEmployeeId() +"</rid>"
                 + "     <hours>"+ revenue.getHours() +"</hours>"
                 + "     <totalSalary>"+ revenue.getTotalSalary() +"</totalSalary>"

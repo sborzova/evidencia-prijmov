@@ -10,6 +10,7 @@
             </fo:layout-master-set>
             <fo:page-sequence master-reference="simpleA4">
                 <fo:flow flow-name="xsl-region-body">
+                    <!-- Invoice z dkb title-->
                     <fo:block font-size="16pt" font-weight="bold" space-after="5mm">Invoice</fo:block>
                     <fo:block font-size="10pt">From: <xsl:value-of select="from"/></fo:block>
                     <fo:block font-size="10pt">To: <xsl:value-of select="to"/></fo:block>

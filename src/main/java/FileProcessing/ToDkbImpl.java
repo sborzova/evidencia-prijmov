@@ -13,7 +13,7 @@ import java.io.File;
  */
 public class ToDkbImpl {
     public static void main(String[] args)
-            throws TransformerConfigurationException, TransformerException {
+            throws TransformerException {
 
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer xsltProc = tf.newTransformer(

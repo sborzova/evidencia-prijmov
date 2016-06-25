@@ -1,11 +1,1 @@
-<?xml version="1.0"?>
-
-<invoice>
-        <from>06/2010</from>
-        <to>12/2010</to>
-        <firstName>koko</firstName>
-        <surname>lalal</surname>
-        <hours>1345</hours>
-        <hourlyWage>12</hourlyWage>
-        <salary>13486</salary>
-</invoice>
+<?xml version="1.0" encoding="UTF-8"?>

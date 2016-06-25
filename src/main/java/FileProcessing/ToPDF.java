@@ -11,12 +11,12 @@ import java.io.IOException;
  */
 public interface ToPDF {
 
-    /**
-     * Method to convert the given XML to PDF
+    /** Converts the given XML to PDF
+     *
+     * @param file xml file
      * @throws IOException
      * @throws FOPException
      * @throws TransformerException
-     * @param file
      */
     void convertToPDF(File file)  throws IOException, FOPException, TransformerException;
 }

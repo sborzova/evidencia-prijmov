@@ -3,6 +3,7 @@ package backend;
 import FileProcessing.CreateXMLImpl;
 import org.exist.xmldb.EXistResource;
 import org.xmldb.api.base.*;
+import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
 
 import java.io.File;
@@ -172,8 +173,11 @@ public class RevenueManager {
     }
 
     public void generateDocBook(Employee employee,LocalDate from,LocalDate to) throws XMLDBException {
+        
+        XMLResource res = null;
+        res = (XMLResource)collection.createResource(null, "XMLResource");
 
-
-       // File f = new CreateXMLImpl().createXML(employee,from,to,findRevenuesByEmployee(employee));
+        res.setContent(new CreateXMLImpl().createXML(employee,from,to,findRevenuesByEmployee(employee)));
+        collection.storeResource(res);
     }
 }

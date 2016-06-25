@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.xml.transform.OutputKeys;
 import java.awt.event.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * @author Marek Scholtz
@@ -59,7 +60,6 @@ public class MainFrame {
         try {
             collection = DatabaseManager.getCollection(URI);
             collection.setProperty(OutputKeys.INDENT, "no");
-
         } finally {
 
             if (collection != null) {
@@ -115,28 +115,22 @@ public class MainFrame {
         createStatementOfRevenueButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
-                Employee employee = null;
-                try {
-                    employee = employeeManager.getEmployee((Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
-                } catch (XMLDBException ex) {
-                    ex.printStackTrace();
-                }
-                //RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
-                //new RevenueDialog().main(employee, employeeTableModel, revenueTableModel, employeeTable.getSelectedRow());
+                RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
+                new RevenueDialog().main(collection, revenueTableModel, (Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
                 addEmployeeButton.setEnabled(true);
                 deleteEmployeeButton.setEnabled(false);
                 createStatementOfRevenueButton.setEnabled(false);
             }
         });
-
+        /*
         employeeTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 addEmployeeButton.setEnabled(false);
                 deleteEmployeeButton.setEnabled(true);
                 createStatementOfRevenueButton.setEnabled(true);
-                //RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
-                //revenueTableModel.findRows(employeeTable.getSelectedRow());
+                RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
+                revenueTableModel.listRows(employeeTable.getSelectedRow());
             }
         });
 
@@ -146,15 +140,8 @@ public class MainFrame {
                 int fromYear = Integer.parseInt((String) fromYearComboBox.getSelectedItem());
                 int toMonth = toMonthComboBox.getSelectedIndex() + 1;
                 int toYear = Integer.parseInt((String) toYearComboBox.getSelectedItem());
-                //RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
-                //revenueTableModel.listRows(LocalDate.of(fromYear, fromMonth, 1), LocalDate.of(toYear, toMonth, 1), employeeTable.getSelectedRow());
-            }
-        });
-
-        deleteRevenueButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
-                //revenueTableModel.deleteRow(revenueTable.getSelectedRow());
+                RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
+                revenueTableModel.findRows(LocalDate.of(fromYear, fromMonth, 1), LocalDate.of(toYear, toMonth, 1), employeeTable.getSelectedRow());
             }
         });
 
@@ -164,7 +151,7 @@ public class MainFrame {
                 int fromYear = Integer.parseInt((String) fromYearComboBox.getSelectedItem());
                 int toMonth = toMonthComboBox.getSelectedIndex() + 1;
                 int toYear = Integer.parseInt((String) toYearComboBox.getSelectedItem());
-                //RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
+                RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
                 //InvoiceTableModel invoiceTableModel = (InvoiceTableModel) invoiceTable.getModel();
                 //revenueTableModel.generateRows(LocalDate.of(fromYear, fromMonth, 1), LocalDate.of(toYear, toMonth, 1), invoiceTableModel);
             }
@@ -192,6 +179,7 @@ public class MainFrame {
                 exportToPDFButton.setEnabled(false);
             }
         });
+        */
 
     }
 }

@@ -140,30 +140,6 @@ class EmployeeTableModel extends AbstractTableModel {
             fireTableRowsDeleted(row, row);
         }
     }
-/*
-    private class createStatementOfRevenueSwingWorker extends SwingWorker <Void, Void> {
-
-        private final EmployeeManager employeeManager;
-        private final RevenueTableModel revenueTableModel;
-        private final Revenue revenue;
-        private final int row;
-
-        public createStatementOfRevenueSwingWorker(EmployeeManager employeeManager, RevenueTableModel revenueTableModel, Revenue revenue, int rowIndex) {
-            this.employeeManager = employeeManager;
-            this.revenueTableModel = revenueTableModel;
-            this.revenue = revenue;
-            this.row = rowIndex;
-        }
-
-        @Override
-        protected Void doInBackground() throws Exception {
-            employeeManager.createStatementOfRevenue(employeeManager.getEmployee((Long) getValueAt(row, 0)), revenue);
-            revenueTableModel.addRow(revenue);
-            return null;
-        }
-    }
-
-   */
 
     void addRow(Employee employee) {
         AddSwingWorker addSwingWorker = new AddSwingWorker(employeeManager, employee);

@@ -15,19 +15,19 @@ public class RevenueDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
-    private JTextField textField1;
     private JComboBox monthComboBox;
     private JComboBox yearComboBox;
     private JTextField hoursTextField;
     private Employee employee;
     private EmployeeTableModel employeeTableModel;
-    private EmployeeManager employeeManager;
     private RevenueTableModel revenueTableModel;
     private Long employeeID;
+    private BigDecimal hourlyWage;
 
-    public RevenueDialog() {
+    public RevenueDialog(RevenueTableModel revenueTableModel, Long employeeID, BigDecimal hourlyWage) {
+        this.revenueTableModel = revenueTableModel;
+        this.employeeID = employeeID;
+        this.hourlyWage = hourlyWage;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -65,7 +65,7 @@ public class RevenueDialog extends JDialog {
         revenue.setEmployeeId(employeeID);
         int hours = Integer.parseInt(hoursTextField.getText());
         revenue.setHours(hours);
-        revenue.setTotalSalary(employee.getHourlyWage().multiply(new BigDecimal(hours)));
+        revenue.setTotalSalary(hourlyWage.multiply(new BigDecimal(hours)));
         int month = monthComboBox.getSelectedIndex() + 1;
         int year = Integer.parseInt((String) yearComboBox.getSelectedItem());
         revenue.setDrawInvoiceDate(LocalDate.of(year, month, 1));
@@ -77,13 +77,9 @@ public class RevenueDialog extends JDialog {
         dispose();
     }
 
-    void main(Collection collection, RevenueTableModel revenueTableModel, Long employeeID) {
-        this.revenueTableModel = revenueTableModel;
-        this.employeeID = employeeID;
-        employeeManager = new EmployeeManager(collection);
-        RevenueDialog dialog = new RevenueDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
+    void main() {
+
+        this.pack();
+        this.setVisible(true);
     }
 }

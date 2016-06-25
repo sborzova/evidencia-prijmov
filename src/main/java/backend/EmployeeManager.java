@@ -58,7 +58,11 @@ public class EmployeeManager {
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
+
+        String Query2 = "update delete /revenues/revenue[eid="+id+"]";
+
         xpqs.query(Query);
+        xpqs.query(Query2);
     }
 
     public List<Employee> listAllEmployees() {

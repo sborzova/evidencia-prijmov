@@ -2,6 +2,7 @@ package Gui;
 
 import backend.Employee;
 import backend.EmployeeManager;
+import backend.RevenueManager;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
@@ -43,7 +44,7 @@ public class MainFrame {
     private JTextField textField1;
     private JLabel hourlyWageLabel;
     private static EmployeeManager employeeManager;
-    //private static RevenueManager revenueManager;
+    private static RevenueManager revenueManager;
     //private static InvoiceManager invoiceManager;
     private static String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/db/RevenueEvidence";
     private static Collection collection = null;
@@ -72,14 +73,14 @@ public class MainFrame {
         }
 
         employeeManager = new EmployeeManager(collection);
-        //revenueManager = new RevenueManager(collection);
+        revenueManager = new RevenueManager(collection);
         //invoiceManager = new InvoiceManager(collection);
     }
 
     public static void main(String[] args) throws Exception {
 
         initializeDatabase();
-        JFrame frame = new JFrame("Movie database");
+        JFrame frame = new JFrame("Salary evidence");
         frame.setContentPane(new MainFrame().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -89,6 +90,7 @@ public class MainFrame {
     private MainFrame() {
 
         employeeTable.setModel(new EmployeeTableModel(employeeManager));
+        revenueTable.setModel(new RevenueTableModel(revenueManager));
 
 
         addEmployeeButton.addActionListener(new ActionListener() {
@@ -116,24 +118,24 @@ public class MainFrame {
             public void actionPerformed(ActionEvent e) {
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
-                new RevenueDialog().main(collection, revenueTableModel, (Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0));
+                String hourlyWage = employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 3).toString();
+                RevenueDialog dialog = new RevenueDialog(revenueTableModel, (Long) employeeTableModel.getValueAt(employeeTable.getSelectedRow(), 0), new BigDecimal(hourlyWage));
+                dialog.main();
                 addEmployeeButton.setEnabled(true);
                 deleteEmployeeButton.setEnabled(false);
                 createStatementOfRevenueButton.setEnabled(false);
             }
         });
-        /*
         employeeTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 addEmployeeButton.setEnabled(false);
                 deleteEmployeeButton.setEnabled(true);
                 createStatementOfRevenueButton.setEnabled(true);
-                RevenueTableModel revenueTableModel = (RevenueTableModel) revenueTable.getModel();
-                revenueTableModel.listRows(employeeTable.getSelectedRow());
             }
         });
 
+        /*
         viewRevenuesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 int fromMonth = fromMonthComboBox.getSelectedIndex() + 1;

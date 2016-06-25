@@ -17,14 +17,12 @@ import java.util.List;
 public class RevenueTableModel extends AbstractTableModel {
 
     private final RevenueManager revenueManager;
-    private final EmployeeManager employeeManager;
     private List<Revenue> revenues = new ArrayList<Revenue>();
     private ReadAllSwingWorker readAllSwingWorker;
 
-    public RevenueTableModel(RevenueManager revenueManager, EmployeeManager employeeManager) {
+    public RevenueTableModel(RevenueManager revenueManager) {
 
         this.revenueManager = revenueManager;
-        this.employeeManager = employeeManager;
         readAllSwingWorker = new ReadAllSwingWorker(revenueManager);
         readAllSwingWorker.execute();
 
@@ -35,7 +33,7 @@ public class RevenueTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount() {
-        return 4;
+        return 5;
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -51,6 +49,24 @@ public class RevenueTableModel extends AbstractTableModel {
                 return revenue.getTotalSalary();
             case 4:
                 return revenue.getDrawInvoiceDate();
+            default:
+                throw new IllegalArgumentException("Column index out of range");
+        }
+    }
+
+    @Override
+    public String getColumnName(int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return "ID";
+            case 1:
+                return "Employee ID";
+            case 2:
+                return "Hours";
+            case 3:
+                return "Total salary";
+            case 4:
+                return "Date";
             default:
                 throw new IllegalArgumentException("Column index out of range");
         }

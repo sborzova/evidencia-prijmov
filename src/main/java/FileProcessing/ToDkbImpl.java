@@ -1,7 +1,6 @@
 package FileProcessing;
 
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -13,9 +12,13 @@ import java.io.File;
  */
 
 public class ToDkbImpl implements ToDkb{
-
+    /**
+     *
+     * @return
+     * @throws TransformerException
+     */
     @Override
-    public void toDbk() throws TransformerException {
+    public File toDbk() throws TransformerException {
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer xsltProc = tf.newTransformer(
                 new StreamSource(new File(".\\src\\main\\resources\\xmlTemplate.xsl")));
@@ -23,5 +26,8 @@ public class ToDkbImpl implements ToDkb{
         xsltProc.transform(
                 new StreamSource(new File(".\\src\\main\\resources\\revenueXml.xml")),
                 new StreamResult(new File(".\\src\\main\\resources\\Invoice.xml")));
+
+        //return new File(url.getPath());
+        return new File(".\\src\\main\\resources\\Invoice.xml");
     }
 }

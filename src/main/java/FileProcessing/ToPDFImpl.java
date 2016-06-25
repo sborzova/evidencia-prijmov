@@ -21,11 +21,11 @@ import org.apache.fop.apps.MimeConstants;
  * Created by Anonym on 24. 6. 2016.
  */
 public class ToPDFImpl {
-
+/*
     public static void main(String[] args) {
         ToPDFImpl fOPPdfDemo = new ToPDFImpl();
         try {
-            fOPPdfDemo.convertToPDF();
+            fOPPdfDemo.convertToPDF(toDbkManager.toDbk());
         } catch (FOPException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -33,26 +33,26 @@ public class ToPDFImpl {
         } catch (TransformerException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * Method to convert the given XML to PDF
      * @throws IOException
      * @throws FOPException
      * @throws TransformerException
+     * @param file
      */
-    public void convertToPDF()  throws IOException, FOPException, TransformerException {
+    public void convertToPDF(File file)  throws IOException, FOPException, TransformerException {
 
-        File xsltFile = new File("C:\\Users\\Anonym\\Documents\\GitHub\\EvidenciaPrijmov\\evidencia-prijmov\\src\\main\\resources\\invoiceTemplate.xsl");
+        File xsltFile = new File(".\\src\\main\\resources\\invoiceTemplate.xsl");
 
-        StreamSource xmlSource = new StreamSource(new File("C:\\Users\\Anonym\\Documents\\GitHub\\EvidenciaPrijmov\\evidencia-prijmov\\src\\main\\resources\\Invoice.xml"));
+        StreamSource xmlSource = new StreamSource(file);
 
         FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
-
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
 
         OutputStream out;
-        out = new java.io.FileOutputStream("C:\\Users\\Anonym\\Documents\\GitHub\\EvidenciaPrijmov\\evidencia-prijmov\\src\\main\\resources\\Invoice.pdf");
+        out = new java.io.FileOutputStream(".\\src\\main\\resources\\Invoice.pdf");
 
         try {
 
@@ -77,13 +77,13 @@ public class ToPDFImpl {
      */
     public void convertToFO()  throws IOException, FOPException, TransformerException {
 
-        File xsltFile = new File("C:\\Users\\Anonym\\Documents\\GitHub\\EvidenciaPrijmov\\evidencia-prijmov\\src\\main\\resources\\invoiceTemplate.xsl");
+        File xsltFile = new File(".\\src\\main\\resources\\invoiceTemplate.xsl");
 
-        StreamSource xmlSource = new StreamSource(new File("C:\\Users\\Anonym\\Documents\\GitHub\\EvidenciaPrijmov\\evidencia-prijmov\\src\\main\\resources\\Invoice.xml"));
+        StreamSource xmlSource = new StreamSource(new File(".\\src\\main\\resources\\Invoice.xml"));
 
         OutputStream out;
 
-        out = new java.io.FileOutputStream("C:\\Users\\Anonym\\Documents\\GitHub\\EvidenciaPrijmov\\evidencia-prijmov\\src\\main\\resources\\temp.fo");
+        out = new java.io.FileOutputStream(".\\src\\main\\resources\\temp.fo");
 
         try {
             TransformerFactory factory = TransformerFactory.newInstance();

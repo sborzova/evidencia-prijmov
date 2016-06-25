@@ -9,9 +9,9 @@ import java.io.File;
  */
 public interface ToDkb {
 
-    /**
+    /** Converts the given XML to PDF
      *
-     * @return
+     * @return docbook file
      * @throws TransformerException
      */
     File toDbk() throws TransformerException;

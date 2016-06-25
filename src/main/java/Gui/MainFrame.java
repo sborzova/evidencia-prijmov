@@ -89,7 +89,7 @@ public class MainFrame {
 
         employeeTable.setModel(new EmployeeTableModel(employeeManager));
         revenueTable.setModel(new RevenueTableModel(revenueManager, employeeManager));
-
+        invoiceTable.setModel(new InvoiceTableModel(invoiceManager));
 
         addEmployeeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

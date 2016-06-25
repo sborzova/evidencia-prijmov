@@ -42,13 +42,13 @@ public class RevenueManager {
         revenue.setId(id);
 
         String Query = "update insert"
-                + "<employee>"
+                + "<revenue>"
                 + "     <eid>"+ revenue.getId() +"</eid>"
                 + "     <rid>"+ revenue.getEmployeeId() +"</rid>"
                 + "     <hours>"+ revenue.getHours() +"</hours>"
                 + "     <totalSalary>"+ revenue.getTotalSalary() +"</totalSalary>"
                 + "     <drawInvoiceDate>"+ revenue.getDrawInvoiceDate() +"</drawInvoiceDate>"
-                + "</employee>"
+                + "</revenue>"
                 + "into /revenues";
 
         xpqs.query(Query);
@@ -124,13 +124,42 @@ public class RevenueManager {
         return revenue;
     }
 
-    /*
-    public List<Revenue> findRevenuesByEmployee(Employee employee) {
 
+    public List<Revenue> findRevenuesByEmployee(Employee employee) throws XMLDBException {
+
+        List<Revenue> revenues = new ArrayList<Revenue>();
+
+        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+        xpqs.setProperty("indent", "yes");
+
+        String xpath = "/revenues/revenue[eid="+employee.getId()+"]";
+        ResourceSet result = xpqs.query(xpath);
+        ResourceIterator iterator = result.getIterator();
+
+        while(iterator.hasMoreResources()) {
+            revenues.add(setUpRevenue(iterator));
+        }
+
+        return revenues;
     }
 
-    public List<Revenue> listRevenuesByDate() {
+    /*
+    public List<Revenue> listRevenuesByDate(Employee employee, LocalDate from, LocalDate to) {
 
+        List<Revenue> revenues = new ArrayList<Revenue>();
+
+        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+        xpqs.setProperty("indent", "yes");
+
+        String xpath = "/revenues/revenue[drawInvoiceDate="++"]";
+        ResourceSet result = xpqs.query(xpath);
+        ResourceIterator iterator = result.getIterator();
+
+        while(iterator.hasMoreResources()) {
+            revenues.add(setUpRevenue(iterator));
+        }
+
+        return revenues;
     }
     */
 

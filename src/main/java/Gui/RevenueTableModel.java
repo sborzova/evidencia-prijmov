@@ -130,17 +130,17 @@ public class RevenueTableModel extends AbstractTableModel {
 
         private final RevenueManager revenueManager;
         private final EmployeeManager employeeManager;
-        private final int row;
+        private final Long id;
 
-        public ListSwingWorker(RevenueManager revenueManager, EmployeeManager employeeManager, int row) {
+        public ListSwingWorker(RevenueManager revenueManager, EmployeeManager employeeManager, Long id) {
             this.revenueManager = revenueManager;
             this.employeeManager = employeeManager;
-            this.row = row;
+            this.id = id;
         }
 
         @Override
         protected List<Revenue> doInBackground() throws Exception {
-            return revenueManager.findRevenuesByEmployee(employeeManager.getEmployee((Long) getValueAt(row, 0)));
+            return revenueManager.findRevenuesByEmployee(employeeManager.getEmployee(id));
         }
 
         @Override
@@ -153,7 +153,7 @@ public class RevenueTableModel extends AbstractTableModel {
             }
         }
     }
-    /*
+
         private class FindSwingWorker extends SwingWorker<List<Revenue>, Void> {
 
             private final RevenueManager revenueManager;
@@ -183,7 +183,7 @@ public class RevenueTableModel extends AbstractTableModel {
                 }
             }
         }
-
+/*
         private class GenerateSwingWorker extends SwingWorker<List<Revenue>, Void> {
 
             private final RevenueManager revenueManager;
@@ -221,17 +221,17 @@ public class RevenueTableModel extends AbstractTableModel {
         addSwingWorker.execute();
     }
 
-    void listRows(int row) {
-        ListSwingWorker listSwingWorker = new ListSwingWorker(revenueManager, employeeManager, row);
+    void listRows(Long id) {
+        ListSwingWorker listSwingWorker = new ListSwingWorker(revenueManager, employeeManager, id);
         listSwingWorker.execute();
     }
 
-/*
+
     void findRows(LocalDate from, LocalDate to, int row) {
         FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManager, from, to, row);
         findSwingWorker.execute();
     }
-
+/*
     void generateRows(LocalDate from, LocalDate to, InvoiceTableModel invoiceTableModel) {
         GenerateSwingWorker generateSwingWorker = new GenerateSwingWorker(revenueManager, from, to, invoiceTableModel);
         generateSwingWorker.execute();

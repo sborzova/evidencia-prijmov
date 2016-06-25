@@ -139,7 +139,6 @@ class EmployeeTableModel extends AbstractTableModel {
         protected void done() {
             employees.remove(row);
             fireTableRowsDeleted(row, row);
-
         }
     }
 

@@ -61,7 +61,7 @@ public class EmployeeManager {
             XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
             xpqs.setProperty("indent", "yes");
 
-            String xpath = "employees/employee/child::node()/text()";
+            String xpath = "/employees/employee/child::node()/text()";
 
             ResourceSet result = xpqs.query(xpath);
             ResourceIterator i = result.getIterator();

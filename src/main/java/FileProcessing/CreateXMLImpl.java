@@ -35,7 +35,7 @@ public class CreateXMLImpl implements CreateXML {
     private ToDkbImpl toDbkManager = new ToDkbImpl();
 
     @Override
-    public File createXML(Employee employeeData, LocalDate fromDate, LocalDate toDate, List<Revenue> revenuesList) {
+    public File createXML(Long idInvoice, Employee employeeData, LocalDate fromDate, LocalDate toDate, List<Revenue> revenuesList) {
 
         File file = null;
 
@@ -46,6 +46,10 @@ public class CreateXMLImpl implements CreateXML {
             Document doc = docBuilder.newDocument();
             Element rootElement = doc.createElement("invoice");
             doc.appendChild(rootElement);
+
+            Element id = doc.createElement("id");
+            id.appendChild(doc.createTextNode(idInvoice.toString()));
+            rootElement.appendChild(id);
 
             Element date = doc.createElement("date");
             rootElement.appendChild(date);

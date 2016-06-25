@@ -45,16 +45,17 @@ public class Main {
 
         initializeDatabase();
         EmployeeManager manager = new EmployeeManager(col);
-        manager.listAllEmployees();
+        //manager.listAllEmployees();
 
 
         Employee emp = new Employee();
+        emp.setId(1L);
         emp.setForename("Debil");
         emp.setSurname("retardovany");
         emp.setHourlyWage(BigDecimal.valueOf(50));
 
         manager.createEmployee(emp);
         //manager.deleteEmployee(emp);
-        //manager.getEmployee(1L);
+        //manager.getEmployee(2L);
     }
 }

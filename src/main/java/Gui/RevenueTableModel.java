@@ -218,6 +218,27 @@ public class RevenueTableModel extends AbstractTableModel {
             }
         }
     */
+    private class RevenuesInTotalSwingWorker extends SwingWorker<Void, Void> {
+
+        private final JTable revenueTable;
+        private final JTextField revenuesInTotalTextField;
+
+        public RevenuesInTotalSwingWorker(JTable revenueTable, JTextField revenuesInTotalTextField) {
+            this.revenueTable = revenueTable;
+            this.revenuesInTotalTextField = revenuesInTotalTextField;
+        }
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            Integer amount = 0;
+            for (int i = 0; i < revenueTable.getRowCount(); i++) {
+                amount += Integer.parseInt(revenueTable.getValueAt(i,3).toString());
+            }
+            revenuesInTotalTextField.setText(amount.toString());
+            return null;
+        }
+    }
+
     void addRow(Revenue revenue) {
         AddSwingWorker addSwingWorker = new AddSwingWorker(revenueManager, revenue);
         addSwingWorker.execute();
@@ -233,6 +254,12 @@ public class RevenueTableModel extends AbstractTableModel {
         FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManager, employeeManager, from, to, id);
         findSwingWorker.execute();
     }
+    
+    void revenuesInTotal(JTable revenueTable, JTextField revenuesInTotalTextField) {
+        RevenuesInTotalSwingWorker revenuesSwingWorker = new RevenuesInTotalSwingWorker(revenueTable, revenuesInTotalTextField);
+        revenuesSwingWorker.execute();
+    }
+        
 /*
     void generateRows(LocalDate from, LocalDate to, InvoiceTableModel invoiceTableModel) {
         GenerateSwingWorker generateSwingWorker = new GenerateSwingWorker(revenueManager, from, to, invoiceTableModel);

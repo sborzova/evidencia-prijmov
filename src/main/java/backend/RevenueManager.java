@@ -123,8 +123,7 @@ public class RevenueManager {
 
         return revenue;
     }
-
-
+    
     public List<Revenue> findRevenuesByEmployee(Employee employee) throws XMLDBException {
 
         List<Revenue> revenues = new ArrayList<Revenue>();
@@ -142,7 +141,7 @@ public class RevenueManager {
 
         return revenues;
     }
-    
+
     public List<Revenue> listRevenuesByDate(Employee employee, LocalDate from, LocalDate to) throws XMLDBException {
 
         List<Revenue> revenues = new ArrayList<Revenue>();

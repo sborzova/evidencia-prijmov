@@ -53,8 +53,8 @@ public class Main {
         emp.setSurname("retardovany");
         emp.setHourlyWage(BigDecimal.valueOf(50));
 
-        //manager.createEmployee(emp);
+        manager.createEmployee(emp);
         //manager.deleteEmployee(emp);
-        manager.getEmployee(1L);
+        //manager.getEmployee(1L);
     }
 }

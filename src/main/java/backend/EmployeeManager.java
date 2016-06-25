@@ -24,25 +24,41 @@ public class EmployeeManager {
         String surname = employee.getSurname();
         String wage = employee.getHourlyWage().toString();
 
+        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+        xpqs.setProperty("indent", "yes");
+        ResourceSet result = xpqs.query("string(/employees/employee[last()]/eid)");
+
+        ResourceIterator i = result.getIterator();
+        Resource res;
+        res = i.nextResource();
+
+        Long id;
+        if(res.getContent().toString().equals("")) {
+            id = 1L;
+        } else {
+            id = Long.parseLong(res.getContent().toString());
+            id++;
+        }
+
         String Query = "update insert"
         + "<employee>"
+        + "     <eid>"+ id +"</eid>"
         + "     <name>"+ forename +"</name>"
         + "     <surname>"+ surname +"</surname>"
         + "     <hourlyWage>"+ wage +"</hourlyWage>"
         + "</employee>"
         + "into /employees";
 
-        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
-        xpqs.setProperty("indent", "yes");
-        xpqs.query(Query);
+        XPathQueryService xpqss = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+        xpqss.setProperty("indent", "yes");
+        xpqss.query(Query);
     }
 
     public void deleteEmployee(Employee employee) throws XMLDBException {
 
         Long id = employee.getId();
 
-        String Query = "update delete /employees/employee[@id="+1+"]";
-
+        String Query = "update delete /employees/employee[eid="+id+"]";
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
@@ -73,6 +89,12 @@ public class EmployeeManager {
 
                     try {
                         res = i.nextResource();
+                        employee.setId(Long.parseLong(res.getContent().toString()));
+                    } finally {
+                        try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+                    }
+                    try {
+                        res = i.nextResource();
                         employee.setForename(res.getContent().toString());
                     } finally {
                         try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
@@ -86,7 +108,7 @@ public class EmployeeManager {
                     }
                     try {
                         res = i.nextResource();
-                        employee.setHourlyWage(new BigDecimal( res.getContent().toString()));
+                        employee.setHourlyWage(new BigDecimal(res.getContent().toString()));
 
                     } finally {
 
@@ -114,12 +136,18 @@ public class EmployeeManager {
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
 
-        String xpath = "/employees/employee[@id="+id+"]/child::node()/text()";
+        String xpath = "/employees/employee[eid="+id+"]/child::node()/text()";
 
         ResourceSet result = xpqs.query(xpath);
         ResourceIterator i = result.getIterator();
         Resource res = null;
 
+        try {
+            res = i.nextResource();
+            employee.setId(Long.parseLong(res.getContent().toString()));
+        } finally {
+            try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
+        }
         try {
             res = i.nextResource();
             employee.setForename(res.getContent().toString());
@@ -135,7 +163,8 @@ public class EmployeeManager {
         }
         try {
             res = i.nextResource();
-            employee.setHourlyWage(new BigDecimal( res.getContent().toString()));
+            String s = res.getContent().toString();
+            employee.setHourlyWage(new BigDecimal(res.getContent().toString()));
 
         } finally {
 

@@ -13,6 +13,18 @@ public class Employee {
     private String surname;
     private BigDecimal hourlyWage;
 
+    public Employee(long id, String forename, String surname, BigDecimal hourlyWage) {
+        this.id = id;
+        this.forename = forename;
+        this.surname = surname;
+        this.hourlyWage = hourlyWage;
+    }
+
+    public Employee() {
+
+    }
+
+
     public String getSurname() {
         return surname;
     }

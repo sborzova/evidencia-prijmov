@@ -29,7 +29,7 @@ public class CreateXMLImpl implements CreateXML {
 
     // this method is called, file is returned (dbk resp. xml)
 
-    //private ToDkbImpl toDbkManager = new ToDkbImpl();
+    private ToDkbImpl toDbkManager = new ToDkbImpl();
 
     /**
      *

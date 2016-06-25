@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "docbook-xml-4.5/docbookx.dtd">
+<book lang="sk">
+    <title>Záverečná správa</title>
+    <subtitle> Názov projekt: Evidencia Príjmov </subtitle>
+    <bookinfo>
+        <authorgroup>
+            <author>
+                <firstname>
+                    Tomáš
+                </firstname>
+                <surname>
+                    Gordian
+                </surname>
+            </author>
+            <author>
+                <firstname>
+                    Silvia
+                </firstname>
+                <surname>
+                    Borzová
+                </surname>
+            </author>
+            <author>
+                <firstname>
+                    Marek
+                </firstname>
+                <surname>
+                    Scholtz
+                </surname>
+            </author>
+            <author>
+                <firstname>
+                    Martina
+                </firstname>
+                <surname>
+                    Cvinčeková
+                </surname>
+            </author>
+        </authorgroup>
+    </bookinfo>
+
+    <chapter>
+        <title>Zadanie projektu</title>
+        <section>
+            <para>Studenti navrhnou a implementují desktopovou aplikaci na platformě Java, která umožní:
+                evidovat odvedenou práci s tím, že k ukládání dat využije nativní XML databázi, z výkazu práce umožní generovat faktury ve formátu docbook za zvolené období s možností exportu do formátu PDF,
+                evidovat faktury vydané systémem za zvolené období, včetně výpočtu celkových příjmů z těchto faktur.
+            </para>
+        </section>
+    </chapter>
+
+    <chapter>
+        <title>Rozdelenie práce</title>
+        <section>
+            <title>Tomáš Gordian</title>
+            <para>Database</para>
+        </section>
+        <section>
+            <title>Silvia Borzová</title>
+            <para>Data Transformation</para>
+        </section>
+        <section>
+            <title>Marek Scholtz</title>
+            <para>GUI</para>
+        </section>
+        <section>
+            <title>Martina Cvinčeková</title>
+            <para>Data Transformation</para>
+            <para>Project Documentation</para>
+        </section>
+    </chapter>
+
+    <chapter>
+        <title>Jednotlivé záverečné správy</title>
+        <section>
+            <title>Tomáš Gordian</title>
+            <para>Fill</para>
+        </section>
+        <section>
+            <title>Silvia Borzová</title>
+            <para>Fill</para>
+        </section>
+        <section>
+            <title>Marek Scholtz</title>
+            <para>Fill</para>
+        </section>
+        <section>
+            <title>Martina Cvinčeková</title>
+            <para>Fill</para>
+        </section>
+    </chapter>
+</book>

@@ -51,6 +51,22 @@ public class InvoiceTableModel extends AbstractTableModel {
         }
     }
 
+    @Override
+    public String getColumnName(int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return "ID";
+            case 1:
+                return "Employee ID";
+            case 2:
+                return "From date";
+            case 3:
+                return "To date";
+            default:
+                throw new IllegalArgumentException("Column index out of range");
+        }
+    }
+
     private class ReadAllSwingWorker extends SwingWorker<List<Invoice>, Void> {
 
         private final InvoiceManager invoiceManager;

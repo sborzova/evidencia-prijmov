@@ -13,6 +13,14 @@ public class Revenue {
     private Double totalSalary;
     private LocalDate drawInvoiceDate;
 
+    public Revenue(long employeeId, long id, int hours, Double totalSalary, LocalDate drawInvoiceDate) {
+        this.employeeId = employeeId;
+        this.id = id;
+        this.hours = hours;
+        this.totalSalary = totalSalary;
+        this.drawInvoiceDate = drawInvoiceDate;
+    }
+
     public long getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package backend;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -7,13 +8,13 @@ import java.time.LocalDate;
  */
 public class Revenue {
 
-    private long employeeId;
-    private long id;
+    private Long employeeId;
+    private Long id;
     private int hours;
-    private Double totalSalary;
+    private BigDecimal totalSalary;
     private LocalDate drawInvoiceDate;
 
-    public Revenue(long employeeId, long id, int hours, Double totalSalary, LocalDate drawInvoiceDate) {
+    public Revenue(long employeeId, long id, int hours, BigDecimal totalSalary, LocalDate drawInvoiceDate) {
         this.employeeId = employeeId;
         this.id = id;
         this.hours = hours;
@@ -21,7 +22,11 @@ public class Revenue {
         this.drawInvoiceDate = drawInvoiceDate;
     }
 
-    public long getId() {
+    public Revenue() {
+
+    }
+
+    public Long getId() {
         return id;
     }
 
@@ -37,11 +42,11 @@ public class Revenue {
         this.hours = hours;
     }
 
-    public Double getTotalSalary() {
+    public BigDecimal getTotalSalary() {
         return totalSalary;
     }
 
-    public void setTotalSalary(Double totalSalary) {
+    public void setTotalSalary(BigDecimal totalSalary) {
         this.totalSalary = totalSalary;
     }
 
@@ -53,7 +58,7 @@ public class Revenue {
         this.drawInvoiceDate = drawInvoiceDate;
     }
 
-    public long getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 

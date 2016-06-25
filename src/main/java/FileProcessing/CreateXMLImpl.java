@@ -31,8 +31,8 @@ public class CreateXMLImpl {
 
             Employee emp = new Employee(1L, "Rki", "ttt", new BigDecimal(10));
             List<Revenue> revenuesList = new ArrayList<>();
-            revenuesList.add(new Revenue(1L, 1L, 50, 4576.12, LocalDate.of(2020,12,5)));
-            revenuesList.add(new Revenue(1L, 2L, 90, 458.12, LocalDate.of(2000,10,5)));
+            revenuesList.add(new Revenue(1L, 1L, 50, new BigDecimal(4576.12), LocalDate.of(2000,10,1)));
+            revenuesList.add(new Revenue(1L, 2L, 90, new BigDecimal(458.12), LocalDate.of(2000,10,1)));
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -87,7 +87,7 @@ public class CreateXMLImpl {
                 revenue.appendChild(hours);
 
                 Element totalSalary = doc.createElement("totalSalary");
-                totalSalary.appendChild(doc.createTextNode(Double.toString(rev.getTotalSalary())));
+                totalSalary.appendChild(doc.createTextNode(rev.getTotalSalary().toString()));
                 revenue.appendChild(totalSalary);
             }
 

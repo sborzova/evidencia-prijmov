@@ -142,16 +142,15 @@ public class RevenueManager {
 
         return revenues;
     }
-
-    /*
-    public List<Revenue> listRevenuesByDate(Employee employee, LocalDate from, LocalDate to) {
+    
+    public List<Revenue> listRevenuesByDate(Employee employee, LocalDate from, LocalDate to) throws XMLDBException {
 
         List<Revenue> revenues = new ArrayList<Revenue>();
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
 
-        String xpath = "/revenues/revenue[drawInvoiceDate="++"]";
+        String xpath = "/revenues/revenue[eid="+employee.getId()+" and drawInvoiceDate>="+from+" and drawInvoiceDate<="+to+"]";
         ResourceSet result = xpqs.query(xpath);
         ResourceIterator iterator = result.getIterator();
 
@@ -161,7 +160,4 @@ public class RevenueManager {
 
         return revenues;
     }
-    */
-
-
 }

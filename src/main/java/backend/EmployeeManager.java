@@ -65,9 +65,21 @@ public class EmployeeManager {
         xpqs.query(Query);
     }
 
+    /*
     public void createStatementOfRevenue(Employee employee, Revenue revenue) {
 
+        String Query = "update insert"
+        + "<employee>"
+        + "     <eid>"+ employee.getId() +"</eid>"
+        + "     <rid>"+ revenue.getEmployeeId() +"</rid>"
+        + "     <surname>"+ surname +"</surname>"
+        + "     <hourlyWage>"+ wage +"</hourlyWage>"
+        + "</employee>"
+        + "into /employees";
+
+
     }
+    */
 
     public List<Employee> listAllEmployees() {
 

@@ -218,10 +218,11 @@ public class RevenueTableModel extends AbstractTableModel {
             }
         }
     */
-    private class RevenuesInTotalSwingWorker extends SwingWorker<Void, Void> {
+    private class RevenuesInTotalSwingWorker extends SwingWorker<Integer, Void> {
 
         private final JTable revenueTable;
         private final JTextField revenuesInTotalTextField;
+        private Integer amount = 0;
 
         public RevenuesInTotalSwingWorker(JTable revenueTable, JTextField revenuesInTotalTextField) {
             this.revenueTable = revenueTable;
@@ -229,13 +230,16 @@ public class RevenueTableModel extends AbstractTableModel {
         }
 
         @Override
-        protected Void doInBackground() throws Exception {
-            Integer amount = 0;
+        protected Integer doInBackground() throws Exception {
             for (int i = 0; i < revenueTable.getRowCount(); i++) {
                 amount += Integer.parseInt(revenueTable.getValueAt(i,3).toString());
             }
+            return amount;
+        }
+
+        @Override
+        protected void done() {
             revenuesInTotalTextField.setText(amount.toString());
-            return null;
         }
     }
 
@@ -248,7 +252,6 @@ public class RevenueTableModel extends AbstractTableModel {
         ListSwingWorker listSwingWorker = new ListSwingWorker(revenueManager, employeeManager, id);
         listSwingWorker.execute();
     }
-
 
     void findRows(LocalDate from, LocalDate to, Long id) {
         FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManager, employeeManager, from, to, id);

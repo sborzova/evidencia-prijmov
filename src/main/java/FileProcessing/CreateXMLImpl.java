@@ -2,6 +2,7 @@ package FileProcessing;
 
 import backend.Employee;
 import backend.Revenue;
+import org.apache.fop.apps.FOPException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,6 +16,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,8 +27,17 @@ import java.util.List;
  */
 public class CreateXMLImpl implements CreateXML {
 
-    //private ToDkbImpl toDbkManager = new ToDkbImpl();
+    // this method is called, file is returned (dbk resp. xml)
 
+    private ToDkbImpl toDbkManager = new ToDkbImpl();
+
+    /**
+     *
+     * @param employeeData
+     * @param fromDate
+     * @param toDate
+     * @param revenuesList
+     */
     @Override
     public void createXML(Employee employeeData, LocalDate fromDate, LocalDate toDate, List<Revenue> revenuesList) {
         try {
@@ -117,15 +128,17 @@ public class CreateXMLImpl implements CreateXML {
             // StreamResult result = new StreamResult(System.out);
 
             transformer.transform(source, result);
+            //toDbkManager.toDbk();
 
         } catch (ParserConfigurationException | TransformerException pce) {
             pce.printStackTrace();
         }
     }
 
-    /*
+
     public static void main(String[] args) {
         ToDkbImpl toDbkManager = new ToDkbImpl();
+        ToPDFImpl toPDFManager = new ToPDFImpl();
         try {
 
             Employee employeeData = new Employee(1L, "Rki", "ttt", new BigDecimal(10));
@@ -133,7 +146,7 @@ public class CreateXMLImpl implements CreateXML {
             revenuesList.add(new Revenue(1L, 1L, 50, new BigDecimal(4576.12), LocalDate.of(2000,10,1)));
             revenuesList.add(new Revenue(1L, 2L, 90, new BigDecimal(458.12), LocalDate.of(2000,10,1)));
 
-            LocalDate fromDate = LocalDate.of(3333,10,1);
+            LocalDate fromDate = LocalDate.of(1479,10,1);
             LocalDate toDate = LocalDate.of(1111,10,1);
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -162,7 +175,7 @@ public class CreateXMLImpl implements CreateXML {
             eid.appendChild(doc.createTextNode(Long.toString(emp.getId())));
             employee.appendChild(eid);
             */
-/*
+
             Attr employee_atr = doc.createAttribute("id");
             employee_atr.setValue(Long.toString(employeeData.getId()));
             employee.setAttributeNode(employee_atr);
@@ -216,11 +229,12 @@ public class CreateXMLImpl implements CreateXML {
             transformer.transform(source, result);
 
             //experiment
-            toDbkManager.toDbk();
 
-        } catch (ParserConfigurationException | TransformerException pce) {
+            toPDFManager.convertToPDF(toDbkManager.toDbk());
+
+        } catch (ParserConfigurationException | TransformerException | FOPException | IOException pce) {
             pce.printStackTrace();
         }
-    }*/
+    }
 
 }

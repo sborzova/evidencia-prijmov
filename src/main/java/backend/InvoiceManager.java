@@ -1,5 +1,7 @@
 package backend;
 
+import org.xmldb.api.base.Collection;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,11 @@ import java.util.List;
  */
 public class InvoiceManager {
 
+    private Collection collection;
+
+    public InvoiceManager(Collection collection) {
+        this.collection = collection;
+    }
 
     public void exportToPDF(Invoice invoice) {
 

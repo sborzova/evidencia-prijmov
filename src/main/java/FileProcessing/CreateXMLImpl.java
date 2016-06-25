@@ -34,32 +34,48 @@ public class CreateXMLImpl {
             revenuesList.add(new Revenue(1L, 1L, 50, new BigDecimal(4576.12), LocalDate.of(2000,10,1)));
             revenuesList.add(new Revenue(1L, 2L, 90, new BigDecimal(458.12), LocalDate.of(2000,10,1)));
 
+            LocalDate fromDate = LocalDate.of(1997,10,1);
+            LocalDate toDate = LocalDate.of(1998,10,1);
+
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            // root elements
             Document doc = docBuilder.newDocument();
             Element rootElement = doc.createElement("invoice");
             doc.appendChild(rootElement);
 
-            // staff elements
+            Element date = doc.createElement("date");
+            rootElement.appendChild(date);
+
+            Element from = doc.createElement("from");
+            from.appendChild(doc.createTextNode(fromDate.toString()));
+            date.appendChild(from);
+
+            Element to = doc.createElement("to");
+            to.appendChild(doc.createTextNode(toDate.toString()));
+            date.appendChild(to);
+
             Element employee = doc.createElement("employee");
             rootElement.appendChild(employee);
 
-            // set attribute to staff element
+            /*
+            Element eid = doc.createElement("eid");
+            eid.appendChild(doc.createTextNode(Long.toString(emp.getId())));
+            employee.appendChild(eid);
+            */
+
             Attr employee_atr = doc.createAttribute("id");
             employee_atr.setValue(Long.toString(emp.getId()));
             employee.setAttributeNode(employee_atr);
 
+
             // shorten way
             // staff.setAttribute("id", "1");
 
-            // firstname elements
             Element forname = doc.createElement("forname");
             forname.appendChild(doc.createTextNode(emp.getForename()));
             employee.appendChild(forname);
 
-            // lastname elements
             Element surname = doc.createElement("surname");
             surname.appendChild(doc.createTextNode(emp.getSurname()));
             employee.appendChild(surname);
@@ -67,8 +83,6 @@ public class CreateXMLImpl {
             Element hourlyWage = doc.createElement("hourlyWage");
             hourlyWage.appendChild(doc.createTextNode(emp.getHourlyWage().toString()));
             employee.appendChild(hourlyWage);
-
-
 
             Element revenues = doc.createElement("revenues");
             rootElement.appendChild(revenues);

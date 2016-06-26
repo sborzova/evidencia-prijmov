@@ -39,11 +39,13 @@ public class InvoiceManager {
 
     public void exportToPDF(Invoice invoice) throws XMLDBException, TransformerException, IOException, FOPException {
 
+        /*
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
         ResourceSet result = xpqs.query("string(/revenues/revenue[last()]/rid)");
+        */
 
-        File file = new File("ahoj.dbk");
+        File file = new File(".\\invoices\\7.dbk");
 
         new ToPDFImpl().convertToPDF(file);
     }
@@ -67,12 +69,12 @@ public class InvoiceManager {
             nodeList = doc.getElementsByTagName("iid");
             Element divElement;
             divElement = (Element) nodeList.item(0);
-            String eid = divElement.getTextContent();
-            invoice.setId(Long.parseLong(eid));
+            String iid = divElement.getTextContent();
+            invoice.setId(Long.parseLong(iid));
 
             nodeList = doc.getElementsByTagName("eid");
             divElement = (Element) nodeList.item(0);
-            String iid = divElement.getTextContent();
+            String eid = divElement.getTextContent();
             invoice.setEmployeeID(Long.parseLong(eid));
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -106,12 +108,12 @@ public class InvoiceManager {
         nodeList = doc.getElementsByTagName("iid");
         Element divElement;
         divElement = (Element) nodeList.item(0);
-        String eid = divElement.getTextContent();
-        invoice.setId(Long.parseLong(eid));
+        String iid = divElement.getTextContent();
+        invoice.setId(Long.parseLong(iid));
 
         nodeList = doc.getElementsByTagName("eid");
         divElement = (Element) nodeList.item(0);
-        String iid = divElement.getTextContent();
+        String eid = divElement.getTextContent();
         invoice.setEmployeeID(Long.parseLong(eid));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

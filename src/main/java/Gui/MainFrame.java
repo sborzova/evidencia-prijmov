@@ -174,10 +174,10 @@ public class MainFrame {
 
         exportToPDFButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                invoiceTable.clearSelection();
                 InvoiceTableModel invoiceTableModel = (InvoiceTableModel) invoiceTable.getModel();
                 invoiceTableModel.exportToPDF((Long) invoiceTableModel.getValueAt(invoiceTable.getSelectedRow(), 0));
                 exportToPDFButton.setEnabled(false);
+                invoiceTable.clearSelection();
             }
         });
     }

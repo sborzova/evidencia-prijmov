@@ -45,7 +45,7 @@ public class InvoiceManager {
         ResourceSet result = xpqs.query("string(/revenues/revenue[last()]/rid)");
         */
 
-        File file = new File(".\\invoices\\7.dbk");
+        File file = new File(".\\invoices\\"+invoice.getId()+".dbk");
 
         new ToPDFImpl().convertToPDF(file);
     }

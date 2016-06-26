@@ -36,17 +36,9 @@ public class InvoiceManager {
         this.collection = collection;
     }
 
-
     public void exportToPDF(Invoice invoice) throws XMLDBException, TransformerException, IOException, FOPException {
 
-        /*
-        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
-        xpqs.setProperty("indent", "yes");
-        ResourceSet result = xpqs.query("string(/revenues/revenue[last()]/rid)");
-        */
-
         File file = new File(".\\invoices\\"+invoice.getId()+".dbk");
-
         new ToPDFImpl().convertToPDF(file);
     }
 
@@ -98,7 +90,7 @@ public class InvoiceManager {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = null;
+        Document doc;
 
         File file = new File(".\\invoices\\"+id+".dbk");
 

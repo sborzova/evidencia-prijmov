@@ -65,9 +65,9 @@ public class CreateXMLImpl implements CreateXML {
             Element employee = doc.createElement("employee");
             rootElement.appendChild(employee);
 
-            Attr employee_atr = doc.createAttribute("id");
-            employee_atr.setValue(Long.toString(employeeData.getId()));
-            employee.setAttributeNode(employee_atr);
+            Element eid = doc.createElement("eid");
+            eid.appendChild(doc.createTextNode(Long.toString(employeeData.getId())));
+            employee.appendChild(eid);
 
             // shorten way staff.setAttribute("id", "1");
 

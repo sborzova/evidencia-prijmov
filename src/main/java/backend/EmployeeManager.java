@@ -30,15 +30,23 @@ public class EmployeeManager {
         ResourceSet result = xpqs.query("string(/employees/employee[last()]/eid)");
 
         ResourceIterator i = result.getIterator();
-        Resource res;
-        res = i.nextResource();
-
+        Resource res = null;
         Long id;
-        if(res.getContent().toString().equals("")) {
-            id = 1L;
-        } else {
-            id = Long.parseLong(res.getContent().toString());
-            id++;
+
+        try {
+            res = i.nextResource();
+            if (res.getContent().toString().equals("")) {
+                id = 1L;
+            } else {
+                id = Long.parseLong(res.getContent().toString());
+                id++;
+            }
+        } finally {
+            try {
+                ((EXistResource)res).freeResources();
+            } catch(XMLDBException xe) {
+                xe.printStackTrace();
+            }
         }
 
         employee.setId(id);
@@ -64,13 +72,11 @@ public class EmployeeManager {
 
         Long id = employee.getId();
 
-        String Query = "update delete /employees/employee[eid="+id+"]";
-
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
 
+        String Query = "update delete /employees/employee[eid="+id+"]";
         String Query2 = "update delete /revenues/revenue[eid="+id+"]";
-
         xpqs.query(Query);
         xpqs.query(Query2);
     }

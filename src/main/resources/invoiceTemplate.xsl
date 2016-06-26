@@ -12,6 +12,7 @@
                 <fo:flow flow-name="xsl-region-body">
                     <fo:block font-size="16pt" font-weight="bold" space-after="5mm"><xsl:value-of select="title"/></fo:block>
                     <fo:block font-size="10pt" font-weight="bold" space-before="5mm" space-after="5mm" ><xsl:value-of select="subtitle[1]"/></fo:block>
+                    <fo:block font-size="10pt">ID: <xsl:value-of select="iid"/></fo:block>
                     <fo:block font-size="10pt">From: <xsl:value-of select="from"/></fo:block>
                     <fo:block font-size="10pt">To: <xsl:value-of select="to"/></fo:block>
                     <fo:block font-size="10pt" font-weight="bold" space-before="5mm" space-after="5mm" ><xsl:value-of select="subtitle[2]"/></fo:block>

@@ -8,6 +8,7 @@
         <book>
             <article>
                 <title>Invoice</title>
+                <iid><xsl:value-of select="iid"/></iid>
                 <subtitle>Date</subtitle>
                 <from><xsl:value-of select="date/from"/></from>
                 <to><xsl:value-of select="date/to"/></to>
@@ -17,6 +18,7 @@
     </xsl:template>
     <xsl:template match="employee">
         <subtitle>Employee</subtitle>
+        <eid><xsl:value-of select="eid"/></eid>
         <firstname><xsl:value-of select="forname"/></firstname>
         <surname><xsl:value-of select="surname"/></surname>
         <hourlyWage><xsl:value-of select="hourlyWage"/></hourlyWage>

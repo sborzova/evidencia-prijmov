@@ -26,7 +26,7 @@ public class ToDkbImpl implements ToDkb{
     /**
      * final variable represents path to invoice docbook file
      */
-    private static final String INVOICE_XML_PATH = ".\\src\\main\\resources\\Invoice.xml";
+    private static final String INVOICE_XML_PATH = ".\\src\\main\\resources\\Invoice.dbk";
 
 
     @Override

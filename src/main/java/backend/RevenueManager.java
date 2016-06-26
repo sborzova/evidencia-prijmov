@@ -161,7 +161,6 @@ public class RevenueManager {
         }
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate date;
 
             res = i.nextResource();
             revenue.setDrawInvoiceDate(LocalDate.parse(res.getContent().toString(), formatter));

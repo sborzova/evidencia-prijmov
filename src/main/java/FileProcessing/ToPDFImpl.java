@@ -43,7 +43,7 @@ public class ToPDFImpl {
     /**
      * final variable represents path to invoice pdf file
      */
-    private static final String INVOICE_PDF_PATH = ".\\src\\main\\resources\\Invoice.pdf";
+    private static final String INVOICE_PDF_PATH = ".\\pdf\\Invoice.pdf";
 
 
     public void convertToPDF(File file)  throws IOException, FOPException, TransformerException {

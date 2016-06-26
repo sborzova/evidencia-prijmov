@@ -1,12 +1,9 @@
 package backend;
 
-import FileProcessing.CreateXMLImpl;
 import org.exist.xmldb.EXistResource;
 import org.xmldb.api.base.*;
-import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,13 +30,21 @@ public class RevenueManager {
         ResourceIterator i = result.getIterator();
         Resource res;
         res = i.nextResource();
-
         Long id;
-        if(res.getContent().toString().equals("")) {
-            id = 1L;
-        } else {
-            id = Long.parseLong(res.getContent().toString());
-            id++;
+
+        try {
+            if (res.getContent().toString().equals("")) {
+                id = 1L;
+            } else {
+                id = Long.parseLong(res.getContent().toString());
+                id++;
+            }
+        } finally {
+            try {
+                ((EXistResource)res).freeResources();
+            } catch(XMLDBException xe) {
+                xe.printStackTrace();
+            }
         }
 
         revenue.setId(id);
@@ -73,7 +78,31 @@ public class RevenueManager {
             while(i.hasMoreResources()) {
                 revenues.add(setUpRevenue(i));
             }
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        } finally {
+            if(collection != null) {
+                try { collection.close(); } catch(XMLDBException xe) {xe.printStackTrace();}
+            }
+        }
+        return revenues;
+    }
 
+    public List<Revenue> findRevenuesByEmployee(Employee employee) {
+
+        List<Revenue> revenues = new ArrayList<Revenue>();
+
+        String xpath = "/revenues/revenue[eid="+employee.getId()+"]/child::node()/text()";
+
+        try {
+            XPathQueryService xpqs = (XPathQueryService) collection.getService("XPathQueryService", "1.0");
+            xpqs.setProperty("indent", "yes");
+            ResourceSet result = xpqs.query(xpath);
+            ResourceIterator iterator = result.getIterator();
+
+            while (iterator.hasMoreResources()) {
+                revenues.add(setUpRevenue(iterator));
+            }
         } catch (XMLDBException e) {
             e.printStackTrace();
         } finally {
@@ -85,48 +114,36 @@ public class RevenueManager {
         return revenues;
     }
 
-    public List<Revenue> findRevenuesByEmployee(Employee employee) throws XMLDBException {
+    public List<Revenue> listRevenuesByDate(Employee employee, LocalDate from, LocalDate to) {
 
         List<Revenue> revenues = new ArrayList<Revenue>();
-
-        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
-        xpqs.setProperty("indent", "yes");
-
-        String xpath = "/revenues/revenue[eid="+employee.getId()+"]/child::node()/text()";
-        ResourceSet result = xpqs.query(xpath);
-        ResourceIterator iterator = result.getIterator();
-
-        while(iterator.hasMoreResources()) {
-            revenues.add(setUpRevenue(iterator));
-        }
-
-        return revenues;
-    }
-
-    public List<Revenue> listRevenuesByDate(Employee employee, LocalDate from, LocalDate to) throws XMLDBException {
-
-        List<Revenue> revenues = new ArrayList<Revenue>();
-
-        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
-        xpqs.setProperty("indent", "yes");
 
         String f = from.toString();
         f = f.replace("-","");
         Integer.parseInt(f);
-
         String t = to.toString();
         t = t.replace("-","");
         Integer.parseInt(t);
 
         String xpath = "/revenues/revenue[eid="+employee.getId()+" and number(translate(drawInvoiceDate/text(),'-','')) >="+f+" " +
                 "and number(translate(drawInvoiceDate/text(),'-','')) <="+t+"]/child::node()/text()";
-        ResourceSet result = xpqs.query(xpath);
-        ResourceIterator iterator = result.getIterator();
 
-        while(iterator.hasMoreResources()) {
-            revenues.add(setUpRevenue(iterator));
+        try {
+            XPathQueryService xpqs = (XPathQueryService) collection.getService("XPathQueryService", "1.0");
+            xpqs.setProperty("indent", "yes");
+            ResourceSet result = xpqs.query(xpath);
+            ResourceIterator iterator = result.getIterator();
+
+            while (iterator.hasMoreResources()) {
+                revenues.add(setUpRevenue(iterator));
+            }
+        } catch (XMLDBException e) {
+            e.printStackTrace();
+        } finally {
+            if(collection != null) {
+                try { collection.close(); } catch(XMLDBException xe) {xe.printStackTrace();}
+            }
         }
-
         return revenues;
     }
 

@@ -4,10 +4,17 @@ import FileProcessing.CreateXMLImpl;
 import FileProcessing.ToPDFImpl;
 import org.apache.fop.apps.FOPException;
 import org.exist.xmldb.EXistResource;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import org.xmldb.api.base.*;
 import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
@@ -41,8 +48,12 @@ public class InvoiceManager {
         new ToPDFImpl().convertToPDF(file);
     }
 
+    public List<Invoice> listAllInvoices() throws XMLDBException, ParserConfigurationException, IOException, SAXException {
 
-    public List<Invoice> listAllInvoices() throws XMLDBException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = null;
+
         List<Invoice> invoices = new ArrayList<>();
 
         File directory = new File(".\\invoices");
@@ -50,23 +61,69 @@ public class InvoiceManager {
         for(File file : directory.listFiles()) {
             Invoice invoice = new Invoice();
 
-            doc(file)/book/article/eid/text()
-            invoice.setEmployeeID();
+            doc = builder.parse(file);
 
+            NodeList nodeList;
+            nodeList = doc.getElementsByTagName("iid");
+            Element divElement;
+            divElement = (Element) nodeList.item(0);
+            String eid = divElement.getTextContent();
+            invoice.setId(Long.parseLong(eid));
+
+            nodeList = doc.getElementsByTagName("eid");
+            divElement = (Element) nodeList.item(0);
+            String iid = divElement.getTextContent();
+            invoice.setEmployeeID(Long.parseLong(eid));
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            nodeList = doc.getElementsByTagName("from");
+            divElement = (Element) nodeList.item(0);
+            String from = divElement.getTextContent();
+            invoice.setFrom(LocalDate.parse(from, formatter));
+
+            nodeList = doc.getElementsByTagName("to");
+            divElement = (Element) nodeList.item(0);
+            String to = divElement.getTextContent();
+            invoice.setTo(LocalDate.parse(to, formatter));
 
             invoices.add(invoice);
         }
-
         return invoices;
     }
 
-    public Invoice getInvoice(Long id) throws XMLDBException {
+    public Invoice getInvoice(Long id) throws XMLDBException, ParserConfigurationException, IOException, SAXException {
         Invoice invoice = new Invoice();
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = null;
 
         File file = new File(".\\invoices\\"+id+".dbk");
 
+        doc = builder.parse(file);
 
+        NodeList nodeList;
+        nodeList = doc.getElementsByTagName("iid");
+        Element divElement;
+        divElement = (Element) nodeList.item(0);
+        String eid = divElement.getTextContent();
+        invoice.setId(Long.parseLong(eid));
 
+        nodeList = doc.getElementsByTagName("eid");
+        divElement = (Element) nodeList.item(0);
+        String iid = divElement.getTextContent();
+        invoice.setEmployeeID(Long.parseLong(eid));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        nodeList = doc.getElementsByTagName("from");
+        divElement = (Element) nodeList.item(0);
+        String from = divElement.getTextContent();
+        invoice.setFrom(LocalDate.parse(from, formatter));
+
+        nodeList = doc.getElementsByTagName("to");
+        divElement = (Element) nodeList.item(0);
+        String to = divElement.getTextContent();
+        invoice.setTo(LocalDate.parse(to, formatter));
 
         return invoice;
     }
@@ -80,12 +137,11 @@ public class InvoiceManager {
         Integer size = directory.listFiles().length;
         size++;
         Long sizeLong = Long.parseLong(size.toString());
+        invoice.setId(sizeLong);
 
         File f = new CreateXMLImpl().createXML(sizeLong,employee,invoice.getFrom(),invoice.getTo(),
                 new RevenueManager(collection).listRevenuesByDate(employee,invoice.getFrom(),invoice.getTo()));
         File newFile = new File(".\\invoices\\"+invoice.getId()+".dbk");
         f.renameTo(newFile);
-
-        invoice.setId(sizeLong);
     }
 }

@@ -44,6 +44,7 @@ public class MainFrame {
     private static EmployeeManager employeeManager;
     private static RevenueManager revenueManager;
     private static InvoiceManager invoiceManager;
+
     private static String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/db/RevenueEvidence";
     private static Collection collection = null;
 
@@ -60,7 +61,6 @@ public class MainFrame {
             collection = DatabaseManager.getCollection(URI);
             collection.setProperty(OutputKeys.INDENT, "no");
         } finally {
-
             if (collection != null) {
                 try {
                     collection.close();

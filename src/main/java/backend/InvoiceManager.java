@@ -36,35 +36,12 @@ public class InvoiceManager {
         this.collection = collection;
     }
 
-    /**
-     * Method to invoke a conversion of an invoice into a pdf file
-     * @param invoice invoice to be converted
-     * @throws XMLDBException
-     * @throws TransformerException
-     * @throws IOException
-     * @throws FOPException
-     */
     public void exportToPDF(Invoice invoice) throws XMLDBException, TransformerException, IOException, FOPException {
 
-        /*
-        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
-        xpqs.setProperty("indent", "yes");
-        ResourceSet result = xpqs.query("string(/revenues/revenue[last()]/rid)");
-        */
-
         File file = new File(".\\invoices\\"+invoice.getId()+".dbk");
-
         new ToPDFImpl().convertToPDF(file);
     }
 
-    /**
-     * Method to list all invoices
-     * @return all invoices
-     * @throws XMLDBException
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
-     */
     public List<Invoice> listAllInvoices() throws XMLDBException, ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -108,21 +85,12 @@ public class InvoiceManager {
         return invoices;
     }
 
-    /**
-     * Method to retrieve a given invoice
-     * @param id invoice id
-     * @return desired invoice
-     * @throws XMLDBException
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
-     */
     public Invoice getInvoice(Long id) throws XMLDBException, ParserConfigurationException, IOException, SAXException {
         Invoice invoice = new Invoice();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = null;
+        Document doc;
 
         File file = new File(".\\invoices\\"+id+".dbk");
 
@@ -154,11 +122,6 @@ public class InvoiceManager {
         return invoice;
     }
 
-    /**
-     * Method to invoke a conversion of an invoice into a dbk file
-     * @param invoice invoice to be converted
-     * @throws XMLDBException
-     */
     public void generateDocBook(Invoice invoice) throws XMLDBException {
 
         Employee employee = new EmployeeManager(collection).getEmployee(invoice.getEmployeeID());

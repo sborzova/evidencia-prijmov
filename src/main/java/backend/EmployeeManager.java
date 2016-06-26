@@ -18,6 +18,11 @@ public class EmployeeManager {
         this.collection = collection;
     }
 
+    /**
+     * Method to create an employee
+     * @param employee employee to be created
+     * @throws XMLDBException
+     */
     public void createEmployee(Employee employee) throws XMLDBException {
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
@@ -50,6 +55,11 @@ public class EmployeeManager {
         xpqs.query(insertQuery);
     }
 
+    /**
+     * Method to delete an employee
+     * @param employee employee to be deleted
+     * @throws XMLDBException
+     */
     public void deleteEmployee(Employee employee) throws XMLDBException {
 
         Long id = employee.getId();
@@ -65,6 +75,10 @@ public class EmployeeManager {
         xpqs.query(Query2);
     }
 
+    /**
+     * Method to retrieve all employees
+     * @return all employees
+     */
     public List<Employee> listAllEmployees() {
 
         List<Employee> employees = new ArrayList<Employee>();
@@ -93,6 +107,12 @@ public class EmployeeManager {
         return employees;
     }
 
+    /**
+     * Method to retrieve a given employee
+     * @param id employee id
+     * @return desired employee
+     * @throws XMLDBException
+     */
     public Employee getEmployee(Long id) throws XMLDBException {
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
@@ -106,6 +126,12 @@ public class EmployeeManager {
         return setUpEmployee(iterator);
     }
 
+    /**
+     * Method to assign data to a given employee
+     * @param iterator iterator
+     * @return employee
+     * @throws XMLDBException
+     */
     public Employee setUpEmployee(ResourceIterator iterator) throws XMLDBException {
 
         Employee employee = new Employee();

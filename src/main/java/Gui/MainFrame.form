@@ -14,7 +14,10 @@
             <preferred-size width="200" height="200"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <inheritsPopupMenu value="false"/>
+          <name resource-bundle="Bundle" key="EMPLOYEE"/>
+        </properties>
         <border type="none"/>
         <children>
           <grid id="479d7" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -47,7 +50,9 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                       <forms defaultalign-horz="false" defaultalign-vert="false"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <name resource-bundle="Bundle" key="EMPLOYEE"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="bb3fe" class="javax.swing.JTable" binding="employeeTable">
@@ -87,7 +92,7 @@
                         </constraints>
                         <properties>
                           <horizontalAlignment value="0"/>
-                          <text value="Forename:"/>
+                          <text resource-bundle="Bundle" key="FORENAME"/>
                         </properties>
                       </component>
                       <component id="d8082" class="javax.swing.JLabel">
@@ -98,7 +103,7 @@
                         </constraints>
                         <properties>
                           <horizontalAlignment value="0"/>
-                          <text value="Surname:"/>
+                          <text resource-bundle="Bundle" key="SURNAME"/>
                         </properties>
                       </component>
                       <component id="877c6" class="javax.swing.JTextField" binding="forenameTextField">
@@ -143,7 +148,7 @@
                             <properties>
                               <enabled value="false"/>
                               <icon value="delete.png"/>
-                              <text value="Delete"/>
+                              <text resource-bundle="Bundle" key="DELETE"/>
                             </properties>
                           </component>
                           <component id="22b6a" class="javax.swing.JButton" binding="createStatementOfRevenueButton" default-binding="true">
@@ -154,7 +159,7 @@
                             <properties>
                               <enabled value="false"/>
                               <icon value="revenue.png"/>
-                              <text value="Create statement of revenue"/>
+                              <text resource-bundle="Bundle" key="CREATESTATEMENTOFREVENUE"/>
                             </properties>
                           </component>
                           <component id="ba033" class="javax.swing.JButton" binding="addEmployeeButton" default-binding="true">
@@ -164,7 +169,7 @@
                             </constraints>
                             <properties>
                               <icon value="add.png"/>
-                              <text value="Add"/>
+                              <text resource-bundle="Bundle" key="ADD"/>
                             </properties>
                           </component>
                         </children>
@@ -185,7 +190,7 @@
                         </constraints>
                         <properties>
                           <horizontalAlignment value="0"/>
-                          <text value="Hourly wage:"/>
+                          <text resource-bundle="Bundle" key="HOURLYWAGE"/>
                         </properties>
                       </component>
                     </children>
@@ -223,7 +228,7 @@
                             <properties>
                               <enabled value="true"/>
                               <icon value="add.png"/>
-                              <text value="Generate"/>
+                              <text resource-bundle="Bundle" key="GENERATE"/>
                             </properties>
                           </component>
                           <component id="e323d" class="javax.swing.JButton" binding="viewRevenuesButton">
@@ -233,7 +238,7 @@
                             </constraints>
                             <properties>
                               <icon value="add.png"/>
-                              <text value="View"/>
+                              <text resource-bundle="Bundle" key="VIEW"/>
                             </properties>
                           </component>
                         </children>
@@ -278,7 +283,7 @@
                             </constraints>
                             <properties>
                               <horizontalAlignment value="0"/>
-                              <text value="From:"/>
+                              <text resource-bundle="Bundle" key="FROM"/>
                             </properties>
                           </component>
                           <component id="9f114" class="javax.swing.JLabel">
@@ -288,7 +293,7 @@
                             </constraints>
                             <properties>
                               <horizontalAlignment value="0"/>
-                              <text value="Revenues in total:"/>
+                              <text resource-bundle="Bundle" key="REVENUESINTOTAL"/>
                             </properties>
                           </component>
                           <component id="448ca" class="javax.swing.JComboBox" binding="fromMonthComboBox">
@@ -354,7 +359,7 @@
                               <forms defaultalign-horz="false"/>
                             </constraints>
                             <properties>
-                              <text value="To:"/>
+                              <text resource-bundle="Bundle" key="TO"/>
                             </properties>
                           </component>
                           <component id="12a68" class="javax.swing.JComboBox" binding="toMonthComboBox">
@@ -461,7 +466,7 @@
                 <properties>
                   <enabled value="false"/>
                   <icon value="pdf.png"/>
-                  <text value="Export to PDF"/>
+                  <text resource-bundle="Bundle" key="EXPORTTOPDF"/>
                 </properties>
               </component>
             </children>

@@ -45,20 +45,14 @@ public class InvoiceManager {
     public List<Invoice> listAllInvoices() throws XMLDBException {
         List<Invoice> invoices = new ArrayList<>();
 
-        XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
-        xpqs.setProperty("indent", "yes");
-
         File directory = new File(".\\invoices");
 
         for(File file : directory.listFiles()) {
             Invoice invoice = new Invoice();
 
-            ResourceSet result;
-            result = xpqs.query("/" + file.getName() + "/book/iid/text()");
-            ResourceIterator i = result.getIterator();
-            Resource res = null;
-            res = i.nextResource();
-            invoice.setId(Long.parseLong(res.getContent().toString()));
+            doc(file)/book/article/eid/text()
+            invoice.setEmployeeID();
+
 
             invoices.add(invoice);
         }
@@ -66,8 +60,13 @@ public class InvoiceManager {
         return invoices;
     }
 
-    public Invoice getInvoice(Long id) {
+    public Invoice getInvoice(Long id) throws XMLDBException {
         Invoice invoice = new Invoice();
+
+        File file = new File(".\\invoices\\"+id+".dbk");
+
+
+
 
         return invoice;
     }
@@ -76,16 +75,16 @@ public class InvoiceManager {
 
         Employee employee = new EmployeeManager(collection).getEmployee(invoice.getEmployeeID());
 
-        File f = new CreateXMLImpl().createXML(employee,invoice.getFrom(),invoice.getTo(),
-                new RevenueManager(collection).listRevenuesByDate(employee,invoice.getFrom(),invoice.getTo()));
-        File newFile = new File(".\\invoices\\aho.dbk");
-        f.renameTo(newFile);
-
         File directory = new File(".\\invoices");
 
         Integer size = directory.listFiles().length;
         size++;
         Long sizeLong = Long.parseLong(size.toString());
+
+        File f = new CreateXMLImpl().createXML(sizeLong,employee,invoice.getFrom(),invoice.getTo(),
+                new RevenueManager(collection).listRevenuesByDate(employee,invoice.getFrom(),invoice.getTo()));
+        File newFile = new File(".\\invoices\\"+invoice.getId()+".dbk");
+        f.renameTo(newFile);
 
         invoice.setId(sizeLong);
     }

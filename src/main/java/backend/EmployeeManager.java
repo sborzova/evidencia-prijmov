@@ -106,32 +106,32 @@ public class EmployeeManager {
         return setUpEmployee(iterator);
     }
 
-    public Employee setUpEmployee(ResourceIterator i) throws XMLDBException {
+    public Employee setUpEmployee(ResourceIterator iterator) throws XMLDBException {
 
         Employee employee = new Employee();
         Resource res = null;
 
         try {
-            res = i.nextResource();
+            res = iterator.nextResource();
             employee.setId(Long.parseLong(res.getContent().toString()));
         } finally {
             try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
         }
         try {
-            res = i.nextResource();
+            res = iterator.nextResource();
             employee.setForename(res.getContent().toString());
         } finally {
             try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
         }
         try {
-            res = i.nextResource();
+            res = iterator.nextResource();
             employee.setSurname(res.getContent().toString());
         } finally {
 
             try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}
         }
         try {
-            res = i.nextResource();
+            res = iterator.nextResource();
             employee.setHourlyWage(new BigDecimal(res.getContent().toString()));
         } finally {
             try { ((EXistResource)res).freeResources(); } catch(XMLDBException xe) {xe.printStackTrace();}

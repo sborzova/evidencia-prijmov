@@ -3,14 +3,12 @@ package backend;
 import FileProcessing.CreateXMLImpl;
 import FileProcessing.ToPDFImpl;
 import org.apache.fop.apps.FOPException;
-import org.exist.xmldb.EXistResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import org.xmldb.api.base.*;
-import org.xmldb.api.modules.XMLResource;
-import org.xmldb.api.modules.XPathQueryService;
+import org.xmldb.api.base.Collection;
+import org.xmldb.api.base.XMLDBException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,7 +16,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -36,12 +33,28 @@ public class InvoiceManager {
         this.collection = collection;
     }
 
+    /**
+     * Method to invoke a conversion of an invoice into a pdf file
+     * @param invoice invoice to be converted
+     * @throws XMLDBException
+     * @throws TransformerException
+     * @throws IOException
+     * @throws FOPException
+     */
     public void exportToPDF(Invoice invoice) throws XMLDBException, TransformerException, IOException, FOPException {
 
         File file = new File(".\\invoices\\"+invoice.getId()+".dbk");
         new ToPDFImpl().convertToPDF(file);
     }
 
+    /**
+     * Method to list all invoices
+     * @return all invoices
+     * @throws XMLDBException
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
     public List<Invoice> listAllInvoices() throws XMLDBException, ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -85,6 +98,15 @@ public class InvoiceManager {
         return invoices;
     }
 
+    /**
+     * Method to retrieve a given invoice
+     * @param id invoice id
+     * @return desired invoice
+     * @throws XMLDBException
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
     public Invoice getInvoice(Long id) throws XMLDBException, ParserConfigurationException, IOException, SAXException {
         Invoice invoice = new Invoice();
 
@@ -122,6 +144,11 @@ public class InvoiceManager {
         return invoice;
     }
 
+    /**
+     * Method to invoke a conversion of an invoice into a dbk file
+     * @param invoice invoice to be converted
+     * @throws XMLDBException
+     */
     public void generateDocBook(Invoice invoice) throws XMLDBException {
 
         Employee employee = new EmployeeManager(collection).getEmployee(invoice.getEmployeeID());

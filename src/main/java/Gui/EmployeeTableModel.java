@@ -2,8 +2,6 @@ package Gui;
 
 import backend.Employee;
 import backend.EmployeeManager;
-import backend.Revenue;
-import backend.RevenueManager;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;

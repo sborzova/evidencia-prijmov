@@ -466,7 +466,7 @@
                     <properties>
                       <enabled value="true"/>
                       <font size="16"/>
-                      <text value="Employees"/>
+                      <text resource-bundle="Bundle" key="EMPLOYEES"/>
                     </properties>
                   </component>
                   <component id="f34e" class="javax.swing.JLabel">
@@ -476,7 +476,7 @@
                     </constraints>
                     <properties>
                       <font size="16"/>
-                      <text value="Revenues"/>
+                      <text resource-bundle="Bundle" key="REVENUES"/>
                     </properties>
                   </component>
                 </children>

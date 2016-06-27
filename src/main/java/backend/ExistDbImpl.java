@@ -4,11 +4,10 @@ import org.exist.xmldb.EXistResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xmldb.api.DatabaseManager;
-import org.xmldb.api.base.Collection;
-import org.xmldb.api.base.Database;
-import org.xmldb.api.base.XMLDBException;
+import org.xmldb.api.base.*;
 import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
+import org.xmldb.api.modules.XPathQueryService;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,7 +26,8 @@ public class ExistDbImpl implements ExistDb {
 
     private static String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/db/";
 
-    public static Collection setUpDatabase() throws Exception {
+    @Override
+    public Collection setUpDatabase() throws Exception {
 
         Collection collection = null;
 
@@ -43,7 +43,12 @@ public class ExistDbImpl implements ExistDb {
         try {
             collection = getOrCreateCollection("revenueEvidence");
 
-            if(!new File(".\\employees.xml").isFile()) {
+            XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
+            xpqs.setProperty("indent", "yes");
+
+            ResourceSet result = xpqs.query("/employees");
+            ResourceIterator iterator = result.getIterator();
+            if (iterator.nextResource() == null) {
                 File f = createXmlFile("employees");
                 if(!f.canRead()) {
                     //vinimka, logger
@@ -53,7 +58,9 @@ public class ExistDbImpl implements ExistDb {
                 collection.storeResource(res);
             }
 
-            if(!new File(".\\revenues.xml").isFile()) {
+            result = xpqs.query("/revenues");
+            iterator = result.getIterator();
+            if (iterator.nextResource() == null) {
                 File f2 = createXmlFile("revenues");
                 if(!f2.canRead()) {
                     //vynimika, logger
@@ -83,7 +90,8 @@ public class ExistDbImpl implements ExistDb {
         return collection;
     }
 
-    public static File createXmlFile(String name) {
+    @Override
+    public File createXmlFile(String name) {
 
         File file = null;
 
@@ -110,12 +118,13 @@ public class ExistDbImpl implements ExistDb {
         return file;
     }
 
-    private static Collection getOrCreateCollection(String collectionUri) throws
+    public Collection getOrCreateCollection(String collectionUri) throws
             XMLDBException {
         return getOrCreateCollection(collectionUri, 0);
     }
 
-    private static Collection getOrCreateCollection(String collectionUri, int pathSegmentOffset) throws XMLDBException {
+    @Override
+    public Collection getOrCreateCollection(String collectionUri, int pathSegmentOffset) throws XMLDBException {
 
         Collection col = DatabaseManager.getCollection(URI + collectionUri);
         if(col == null) {

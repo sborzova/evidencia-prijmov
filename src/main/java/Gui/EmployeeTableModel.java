@@ -12,7 +12,7 @@ import java.util.List;
  * @author Marek Scholtz
  * @version 2016.06.23
  */
-class EmployeeTableModel extends AbstractTableModel {
+public class EmployeeTableModel extends AbstractTableModel {
 
     private final EmployeeManagerImpl employeeManagerImpl;
     private List<Employee> employees = new ArrayList<Employee>();

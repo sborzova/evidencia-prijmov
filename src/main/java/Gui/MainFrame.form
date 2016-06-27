@@ -16,7 +16,7 @@
         </constraints>
         <properties>
           <inheritsPopupMenu value="false"/>
-          <name resource-bundle="Bundle" key="EMPLOYEE"/>
+          <name value="Tabs"/>
         </properties>
         <border type="none"/>
         <children>
@@ -25,7 +25,9 @@
             <constraints>
               <tabbedpane title="Employee"/>
             </constraints>
-            <properties/>
+            <properties>
+              <name resource-bundle="Bundle" key="EMPLOYEE"/>
+            </properties>
             <border type="none"/>
             <children>
               <grid id="f7d51" layout-manager="FormLayout">
@@ -448,7 +450,9 @@
             <constraints>
               <tabbedpane title="Invoice"/>
             </constraints>
-            <properties/>
+            <properties>
+              <name resource-bundle="Bundle" key="INVOICE"/>
+            </properties>
             <border type="none"/>
             <children>
               <component id="13ead" class="javax.swing.JTable" binding="invoiceTable">

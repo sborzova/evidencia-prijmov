@@ -18,6 +18,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Tomas on 27.06.2016.
@@ -51,7 +52,7 @@ public class ExistDbImpl implements ExistDb {
             if (iterator.nextResource() == null) {
                 File f = createXmlFile("employees");
                 if(!f.canRead()) {
-                    //vinimka, logger
+                    throw new IOException("cannot read file");
                 }
                 res = (XMLResource)collection.createResource(null, "XMLResource");
                 res.setContent(f);
@@ -63,7 +64,7 @@ public class ExistDbImpl implements ExistDb {
             if (iterator.nextResource() == null) {
                 File f2 = createXmlFile("revenues");
                 if(!f2.canRead()) {
-                    //vynimika, logger
+                    throw new IOException("cannot read file");
                 }
                 res2 = (XMLResource)collection.createResource(null, "XMLResource");
                 res2.setContent(f2);

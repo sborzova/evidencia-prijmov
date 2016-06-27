@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Marek Scholtz
@@ -16,6 +17,7 @@ public class EmployeeTableModel extends AbstractTableModel {
 
     private final EmployeeManagerImpl employeeManagerImpl;
     private List<Employee> employees = new ArrayList<Employee>();
+    private JOptionPane dialog;
 
     EmployeeTableModel(EmployeeManagerImpl employeeManagerImpl) {
 
@@ -111,8 +113,8 @@ public class EmployeeTableModel extends AbstractTableModel {
                 get();
                 employees.add(employee);
                 fireTableRowsInserted(employees.size() - 1, employees.size() - 1);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (InterruptedException | ExecutionException e) {
+                JOptionPane.showMessageDialog(dialog, e.getCause().getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

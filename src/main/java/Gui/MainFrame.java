@@ -52,6 +52,7 @@ public class MainFrame {
     private JPanel revenuePanel;
     private JTextField revenuesInTotalTextField;
     private JLabel hourlyWageLabel;
+    private JOptionPane dialog;
 
     private static EmployeeManagerImpl employeeManagerImpl;
     private static RevenueManagerImpl revenueManagerImpl;
@@ -87,7 +88,12 @@ public class MainFrame {
                 Employee employee = new Employee();
                 employee.setForename(forenameTextField.getText());
                 employee.setSurname(surnameTextField.getText());
-                employee.setHourlyWage(new BigDecimal(hourlyWageTextField.getText()));
+                if(hourlyWageTextField.getText().matches("-?\\d+(\\.\\d+)?")) {
+                    employee.setHourlyWage(new BigDecimal(hourlyWageTextField.getText()));
+                } else {
+                    JOptionPane.showMessageDialog(dialog, "Hourly wage must be number", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 EmployeeTableModel employeeTableModel = (EmployeeTableModel) employeeTable.getModel();
                 employeeTableModel.addRow(employee);
             }

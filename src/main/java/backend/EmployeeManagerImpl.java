@@ -1,5 +1,6 @@
 package backend;
 
+import common.ValidationException;
 import org.xmldb.api.base.*;
 import org.xmldb.api.modules.*;
 import org.exist.xmldb.EXistResource;
@@ -21,6 +22,8 @@ public class EmployeeManagerImpl implements EmployeeManager {
 
     @Override
     public void createEmployee(Employee employee) throws XMLDBException {
+
+        validateEmployee(employee);
 
         XPathQueryService xpqs = (XPathQueryService)collection.getService("XPathQueryService", "1.0");
         xpqs.setProperty("indent", "yes");
@@ -150,5 +153,23 @@ public class EmployeeManagerImpl implements EmployeeManager {
         }
 
         return employee;
+    }
+
+    private void validateEmployee(Employee employee) throws ValidationException {
+        if (employee == null) {
+            throw new ValidationException("Employee is null.");
+        }
+        if (employee.getForename() == null) {
+            throw new ValidationException("Employee forename is null.");
+        }
+        if (employee.getForename().isEmpty()) {
+            throw new ValidationException("Employee forename is empty.");
+        }
+        if (employee.getSurname() == null) {
+            throw new ValidationException("Employee surname is null.");
+        }
+        if (employee.getSurname().isEmpty()) {
+            throw new ValidationException("Employee surname is empty.");
+        }
     }
 }

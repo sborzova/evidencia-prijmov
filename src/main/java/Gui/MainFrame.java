@@ -12,11 +12,9 @@ import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -54,132 +52,18 @@ public class MainFrame {
     private JPanel revenuePanel;
     private JTextField revenuesInTotalTextField;
     private JLabel hourlyWageLabel;
-    private static EmployeeManager employeeManager;
-    private static RevenueManager revenueManager;
-    private static InvoiceManager invoiceManager;
 
-    private static String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/db/";
-    private static Collection collection = null;
+    private static EmployeeManagerImpl employeeManagerImpl;
+    private static RevenueManagerImpl revenueManagerImpl;
+    private static InvoiceManagerImpl invoiceManagerImpl;
+    private static Collection collection;
 
     public static void initializeDatabase() throws Exception {
 
-        final String driver = "org.exist.xmldb.DatabaseImpl";
-        Class cl = Class.forName(driver);
-        Database database = (Database) cl.newInstance();
-        database.setProperty("create-database", "true");
-        DatabaseManager.registerDatabase(database);
-
-        XMLResource res = null;
-        XMLResource res2 = null;
-
-        try {
-            collection = getOrCreateCollection("revenueEvidence");
-
-            if(!new File(".\\employees.xml").isFile()) {
-                File f = createXmlFile("employees");
-                if(!f.canRead()) {
-                    return;
-                }
-                res = (XMLResource)collection.createResource(null, "XMLResource");
-                res.setContent(f);
-                collection.storeResource(res);
-            }
-
-            if(!new File(".\\revenues.xml").isFile()) {
-                File f2 = createXmlFile("revenues");
-                if(!f2.canRead()) {
-                    return;
-                }
-                res2 = (XMLResource)collection.createResource(null, "XMLResource");
-                res2.setContent(f2);
-                collection.storeResource(res2);
-            }
-
-        } finally {
-            if(res != null) {
-                try {
-                    ((EXistResource)res).freeResources();
-                } catch(XMLDBException xe) {
-                    xe.printStackTrace();
-                }
-            }
-            if(collection != null) {
-                try {
-                    collection.close();
-                } catch(XMLDBException xe) {
-                    xe.printStackTrace();
-                }
-            }
-        }
-
-        employeeManager = new EmployeeManager(collection);
-        revenueManager = new RevenueManager(collection);
-        invoiceManager = new InvoiceManager(collection);
-    }
-
-    public static File createXmlFile(String name) {
-
-        File file = null;
-
-        try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-            Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement(name);
-            doc.appendChild(rootElement);
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-
-            file = new File(".\\files\\" + name + ".xml");
-            StreamResult result = new StreamResult(file);
-
-            transformer.transform(source, result);
-        } catch (ParserConfigurationException | TransformerException ex) {
-            ex.printStackTrace();
-        }
-
-        return file;
-    }
-
-
-    private static Collection getOrCreateCollection(String collectionUri) throws
-            XMLDBException {
-        return getOrCreateCollection(collectionUri, 0);
-    }
-
-    private static Collection getOrCreateCollection(String collectionUri, int pathSegmentOffset) throws XMLDBException {
-
-        Collection col = DatabaseManager.getCollection(URI + collectionUri);
-        if(col == null) {
-            if(collectionUri.startsWith("/")) {
-                collectionUri = collectionUri.substring(1);
-            }
-            String pathSegments[] = collectionUri.split("/");
-            if(pathSegments.length > 0) {
-                StringBuilder path = new StringBuilder();
-                for(int i = 0; i <= pathSegmentOffset; i++) {
-                    path.append("/" + pathSegments[i]);
-                }
-                Collection start = DatabaseManager.getCollection(URI + path);
-                if(start == null) {
-
-                    String parentPath = path.substring(0, path.lastIndexOf("/"));
-                    Collection parent = DatabaseManager.getCollection(URI + parentPath);
-                    CollectionManagementService mgt = (CollectionManagementService) parent.getService("CollectionManagementService", "1.0");
-                    col = mgt.createCollection(pathSegments[pathSegmentOffset]);
-                    col.close();
-                    parent.close();
-                } else {
-                    start.close();
-                }
-            }
-            return getOrCreateCollection(collectionUri, ++pathSegmentOffset);
-        } else {
-            return col;
-        }
+        collection = new ExistDbImpl().setUpDatabase();
+        employeeManagerImpl = new EmployeeManagerImpl(collection);
+        revenueManagerImpl = new RevenueManagerImpl(collection);
+        invoiceManagerImpl = new InvoiceManagerImpl(collection);
     }
 
     public static void main(String[] args) throws Exception {
@@ -194,9 +78,9 @@ public class MainFrame {
 
     private MainFrame() {
 
-        employeeTable.setModel(new EmployeeTableModel(employeeManager));
-        revenueTable.setModel(new RevenueTableModel(revenueManager, employeeManager));
-        invoiceTable.setModel(new InvoiceTableModel(invoiceManager));
+        employeeTable.setModel(new EmployeeTableModel(employeeManagerImpl));
+        revenueTable.setModel(new RevenueTableModel(revenueManagerImpl, employeeManagerImpl));
+        invoiceTable.setModel(new InvoiceTableModel(invoiceManagerImpl));
 
         addEmployeeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

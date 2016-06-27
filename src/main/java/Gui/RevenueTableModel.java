@@ -15,18 +15,18 @@ import java.util.concurrent.ExecutionException;
  */
 public class RevenueTableModel extends AbstractTableModel {
 
-    private final RevenueManager revenueManager;
-    private final EmployeeManager employeeManager;
-    private List<Revenue> revenues = new ArrayList<Revenue>();
+    private final RevenueManagerImpl revenueManagerImpl;
+    private final EmployeeManagerImpl employeeManagerImpl;
+    private List<Revenue> revenues = new ArrayList<>();
     private Integer total;
     private Invoice invoice;
     private ReadAllSwingWorker readAllSwingWorker;
 
-    public RevenueTableModel(RevenueManager revenueManager, EmployeeManager employeeManager) {
+    public RevenueTableModel(RevenueManagerImpl revenueManagerImpl, EmployeeManagerImpl employeeManagerImpl) {
 
-        this.revenueManager = revenueManager;
-        this.employeeManager = employeeManager;
-        readAllSwingWorker = new ReadAllSwingWorker(revenueManager);
+        this.revenueManagerImpl = revenueManagerImpl;
+        this.employeeManagerImpl = employeeManagerImpl;
+        readAllSwingWorker = new ReadAllSwingWorker(revenueManagerImpl);
         readAllSwingWorker.execute();
 
     }
@@ -77,15 +77,15 @@ public class RevenueTableModel extends AbstractTableModel {
 
     private class ReadAllSwingWorker extends SwingWorker<List<Revenue>, Void> {
 
-        private final RevenueManager revenueManager;
+        private final RevenueManagerImpl revenueManagerImpl;
 
-        ReadAllSwingWorker(RevenueManager revenueManager) {
-            this.revenueManager = revenueManager;
+        ReadAllSwingWorker(RevenueManagerImpl revenueManagerImpl) {
+            this.revenueManagerImpl = revenueManagerImpl;
         }
 
         @Override
         protected List<Revenue> doInBackground() throws Exception {
-            return revenueManager.listAllRevenues();
+            return revenueManagerImpl.listAllRevenues();
         }
 
         @Override
@@ -101,17 +101,17 @@ public class RevenueTableModel extends AbstractTableModel {
 
     private class AddSwingWorker extends SwingWorker <Void, Void> {
 
-        private final RevenueManager revenueManager;
+        private final RevenueManagerImpl revenueManagerImpl;
         private final Revenue revenue;
 
-        AddSwingWorker(RevenueManager revenueManager, Revenue revenue) {
-            this.revenueManager = revenueManager;
+        AddSwingWorker(RevenueManagerImpl revenueManagerImpl, Revenue revenue) {
+            this.revenueManagerImpl = revenueManagerImpl;
             this.revenue = revenue;
         }
 
         @Override
         protected Void doInBackground() throws Exception {
-            revenueManager.createRevenue(revenue);
+            revenueManagerImpl.createRevenue(revenue);
             return null;
         }
 
@@ -129,19 +129,19 @@ public class RevenueTableModel extends AbstractTableModel {
 
     private class ListSwingWorker extends SwingWorker<List<Revenue>, Void> {
 
-        private final RevenueManager revenueManager;
-        private final EmployeeManager employeeManager;
+        private final RevenueManagerImpl revenueManagerImpl;
+        private final EmployeeManagerImpl employeeManagerImpl;
         private final Long id;
 
-        public ListSwingWorker(RevenueManager revenueManager, EmployeeManager employeeManager, Long id) {
-            this.revenueManager = revenueManager;
-            this.employeeManager = employeeManager;
+        public ListSwingWorker(RevenueManagerImpl revenueManagerImpl, EmployeeManagerImpl employeeManagerImpl, Long id) {
+            this.revenueManagerImpl = revenueManagerImpl;
+            this.employeeManagerImpl = employeeManagerImpl;
             this.id = id;
         }
 
         @Override
         protected List<Revenue> doInBackground() throws Exception {
-            return revenueManager.findRevenuesByEmployee(employeeManager.getEmployee(id));
+            return revenueManagerImpl.findRevenuesByEmployee(employeeManagerImpl.getEmployee(id));
         }
 
         @Override
@@ -157,15 +157,15 @@ public class RevenueTableModel extends AbstractTableModel {
 
         private class FindSwingWorker extends SwingWorker<List<Revenue>, Void> {
 
-            private final RevenueManager revenueManager;
-            private final EmployeeManager employeeManager;
+            private final RevenueManagerImpl revenueManagerImpl;
+            private final EmployeeManagerImpl employeeManagerImpl;
             private final LocalDate from;
             private final LocalDate to;
             private final Long id;
 
-            public FindSwingWorker(RevenueManager revenueManager, EmployeeManager employeeManager, LocalDate from, LocalDate to, Long id) {
-                this.revenueManager = revenueManager;
-                this.employeeManager = employeeManager;
+            public FindSwingWorker(RevenueManagerImpl revenueManagerImpl, EmployeeManagerImpl employeeManagerImpl, LocalDate from, LocalDate to, Long id) {
+                this.revenueManagerImpl = revenueManagerImpl;
+                this.employeeManagerImpl = employeeManagerImpl;
                 this.from = from;
                 this.to = to;
                 this.id = id;
@@ -173,7 +173,7 @@ public class RevenueTableModel extends AbstractTableModel {
 
             @Override
             protected List<Revenue> doInBackground() throws Exception {
-                return revenueManager.listRevenuesByDate(employeeManager.getEmployee(id), from, to);
+                return revenueManagerImpl.listRevenuesByDate(employeeManagerImpl.getEmployee(id), from, to);
             }
 
             @Override
@@ -218,17 +218,17 @@ public class RevenueTableModel extends AbstractTableModel {
     }
 
     void addRow(Revenue revenue) {
-        AddSwingWorker addSwingWorker = new AddSwingWorker(revenueManager, revenue);
+        AddSwingWorker addSwingWorker = new AddSwingWorker(revenueManagerImpl, revenue);
         addSwingWorker.execute();
     }
 
     void listRows(Long id) {
-        ListSwingWorker listSwingWorker = new ListSwingWorker(revenueManager, employeeManager, id);
+        ListSwingWorker listSwingWorker = new ListSwingWorker(revenueManagerImpl, employeeManagerImpl, id);
         listSwingWorker.execute();
     }
 
     void findRows(LocalDate from, LocalDate to, Long id) {
-        FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManager, employeeManager, from, to, id);
+        FindSwingWorker findSwingWorker = new FindSwingWorker(revenueManagerImpl, employeeManagerImpl, from, to, id);
         findSwingWorker.execute();
     }
     

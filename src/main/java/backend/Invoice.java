@@ -3,7 +3,7 @@ package backend;
 import java.time.LocalDate;
 
 /**
- * @author Marek Scholtz
+ * @author Tomas Gordian
  * @version 2016.06.25
  */
 public class Invoice {

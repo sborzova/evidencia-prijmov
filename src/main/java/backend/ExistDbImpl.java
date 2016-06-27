@@ -36,7 +36,7 @@ public class ExistDbImpl implements ExistDb {
         Class cl = Class.forName(driver);
         Database database = (Database) cl.newInstance();
         database.setProperty("create-database", "true");
-        database.setProperty("configuration",".\\target\\conf.xml");
+        database.setProperty("configuration",".\\configure\\conf.xml");
         DatabaseManager.registerDatabase(database);
 
         XMLResource res = null;

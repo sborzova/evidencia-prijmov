@@ -1,6 +1,7 @@
 package Gui;
 
 import backend.*;
+import org.exist.xmldb.DatabaseInstanceManager;
 import org.exist.xmldb.EXistResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -177,5 +178,17 @@ public class MainFrame {
                 invoiceTable.clearSelection();
             }
         });
+
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                DatabaseInstanceManager manager;
+                try {
+                    manager = (DatabaseInstanceManager) collection.getService("DatabaseInstanceManager", "1.0");
+                    manager.shutdown();
+                } catch (XMLDBException e) {
+                    e.printStackTrace();
+                }
+            }
+        }));
     }
 }

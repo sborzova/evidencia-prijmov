@@ -18,13 +18,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Tomas on 27.06.2016.
  */
 public class ExistDbImpl implements ExistDb {
 
-    private static String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/db/";
+    private static String URI = "xmldb:exist:///db/";
 
     @Override
     public Collection setUpDatabase() throws Exception {
@@ -35,6 +36,7 @@ public class ExistDbImpl implements ExistDb {
         Class cl = Class.forName(driver);
         Database database = (Database) cl.newInstance();
         database.setProperty("create-database", "true");
+        database.setProperty("configuration",".\\target\\conf.xml");
         DatabaseManager.registerDatabase(database);
 
         XMLResource res = null;
@@ -51,7 +53,7 @@ public class ExistDbImpl implements ExistDb {
             if (iterator.nextResource() == null) {
                 File f = createXmlFile("employees");
                 if(!f.canRead()) {
-                    //vinimka, logger
+                    throw new IOException("cannot read file");
                 }
                 res = (XMLResource)collection.createResource(null, "XMLResource");
                 res.setContent(f);
@@ -63,7 +65,7 @@ public class ExistDbImpl implements ExistDb {
             if (iterator.nextResource() == null) {
                 File f2 = createXmlFile("revenues");
                 if(!f2.canRead()) {
-                    //vynimika, logger
+                    throw new IOException("cannot read file");
                 }
                 res2 = (XMLResource)collection.createResource(null, "XMLResource");
                 res2.setContent(f2);
@@ -126,7 +128,7 @@ public class ExistDbImpl implements ExistDb {
     @Override
     public Collection getOrCreateCollection(String collectionUri, int pathSegmentOffset) throws XMLDBException {
 
-        Collection col = DatabaseManager.getCollection(URI + collectionUri);
+        Collection col = DatabaseManager.getCollection(URI + collectionUri,"admin", "");
         if(col == null) {
             if(collectionUri.startsWith("/")) {
                 collectionUri = collectionUri.substring(1);
@@ -137,11 +139,11 @@ public class ExistDbImpl implements ExistDb {
                 for(int i = 0; i <= pathSegmentOffset; i++) {
                     path.append("/" + pathSegments[i]);
                 }
-                Collection start = DatabaseManager.getCollection(URI + path);
+                Collection start = DatabaseManager.getCollection(URI + path,"admin", "");
                 if(start == null) {
 
                     String parentPath = path.substring(0, path.lastIndexOf("/"));
-                    Collection parent = DatabaseManager.getCollection(URI + parentPath);
+                    Collection parent = DatabaseManager.getCollection(URI + parentPath,"admin", "");
                     CollectionManagementService mgt = (CollectionManagementService) parent.getService("CollectionManagementService", "1.0");
                     col = mgt.createCollection(pathSegments[pathSegmentOffset]);
                     col.close();

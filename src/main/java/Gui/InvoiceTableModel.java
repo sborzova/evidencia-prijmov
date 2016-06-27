@@ -23,7 +23,6 @@ public class InvoiceTableModel extends AbstractTableModel {
         this.invoiceManagerImpl = invoiceManagerImpl;
         readAllSwingWorker = new ReadAllSwingWorker(invoiceManagerImpl);
         readAllSwingWorker.execute();
-
     }
 
     public int getRowCount() {

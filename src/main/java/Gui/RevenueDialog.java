@@ -21,6 +21,7 @@ public class RevenueDialog extends JDialog {
     private RevenueTableModel revenueTableModel;
     private Long employeeID;
     private BigDecimal hourlyWage;
+    private JOptionPane dialog;
 
     public RevenueDialog(RevenueTableModel revenueTableModel, Long employeeID, BigDecimal hourlyWage) {
         this.revenueTableModel = revenueTableModel;
@@ -61,7 +62,13 @@ public class RevenueDialog extends JDialog {
     private void onOK() {
         Revenue revenue = new Revenue();
         revenue.setEmployeeId(employeeID);
-        int hours = Integer.parseInt(hoursTextField.getText());
+        int hours;
+        if(hoursTextField.getText().matches("-?\\d+(\\.\\d+)?")) {
+            hours = Integer.parseInt(hoursTextField.getText());
+        } else {
+            JOptionPane.showMessageDialog(dialog, "Hours must be number", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         revenue.setHours(hours);
         revenue.setTotalSalary(hourlyWage.multiply(new BigDecimal(hours)));
         int month = monthComboBox.getSelectedIndex() + 1;

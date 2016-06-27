@@ -239,7 +239,7 @@
                               <forms/>
                             </constraints>
                             <properties>
-                              <icon value="add.png"/>
+                              <icon value="view.png"/>
                               <text resource-bundle="Bundle" key="VIEW"/>
                             </properties>
                           </component>

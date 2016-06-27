@@ -4,7 +4,6 @@ import backend.*;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +14,14 @@ import java.util.List;
 public class InvoiceTableModel extends AbstractTableModel {
 
 
-    private final InvoiceManager invoiceManager;
-    private List<Invoice> invoices = new ArrayList<Invoice>();
+    private final InvoiceManagerImpl invoiceManagerImpl;
+    private List<Invoice> invoices = new ArrayList<>();
     private ReadAllSwingWorker readAllSwingWorker;
 
-    public InvoiceTableModel(InvoiceManager invoiceManager) {
+    public InvoiceTableModel(InvoiceManagerImpl invoiceManagerImpl) {
 
-        this.invoiceManager = invoiceManager;
-        readAllSwingWorker = new ReadAllSwingWorker(invoiceManager);
+        this.invoiceManagerImpl = invoiceManagerImpl;
+        readAllSwingWorker = new ReadAllSwingWorker(invoiceManagerImpl);
         readAllSwingWorker.execute();
 
     }
@@ -69,15 +68,15 @@ public class InvoiceTableModel extends AbstractTableModel {
 
     private class ReadAllSwingWorker extends SwingWorker<List<Invoice>, Void> {
 
-        private final InvoiceManager invoiceManager;
+        private final InvoiceManagerImpl invoiceManagerImpl;
 
-        public ReadAllSwingWorker(InvoiceManager invoiceManager) {
-            this.invoiceManager = invoiceManager;
+        public ReadAllSwingWorker(InvoiceManagerImpl invoiceManagerImpl) {
+            this.invoiceManagerImpl = invoiceManagerImpl;
         }
 
         @Override
         protected List<Invoice> doInBackground() throws Exception {
-            return invoiceManager.listAllInvoices();
+            return invoiceManagerImpl.listAllInvoices();
         }
 
         @Override
@@ -93,17 +92,17 @@ public class InvoiceTableModel extends AbstractTableModel {
 
     private class AddSwingWorker extends SwingWorker<Void, Void> {
 
-        private final InvoiceManager invoiceManager;
+        private final InvoiceManagerImpl invoiceManagerImpl;
         private final Invoice invoice;
 
-        public AddSwingWorker(InvoiceManager invoiceManager, Invoice invoice) {
-            this.invoiceManager = invoiceManager;
+        public AddSwingWorker(InvoiceManagerImpl invoiceManagerImpl, Invoice invoice) {
+            this.invoiceManagerImpl = invoiceManagerImpl;
             this.invoice = invoice;
         }
 
         @Override
         protected Void doInBackground() throws Exception {
-            invoiceManager.generateDocBook(invoice);
+            invoiceManagerImpl.generateDocBook(invoice);
             return null;
         }
 
@@ -121,28 +120,28 @@ public class InvoiceTableModel extends AbstractTableModel {
 
     private class PDFSwingWorker extends SwingWorker <Void, Void> {
 
-        private final InvoiceManager invoiceManager;
+        private final InvoiceManagerImpl invoiceManagerImpl;
         private final Long id;
 
-        public PDFSwingWorker(InvoiceManager invoiceManager, Long id) {
-            this.invoiceManager = invoiceManager;
+        public PDFSwingWorker(InvoiceManagerImpl invoiceManagerImpl, Long id) {
+            this.invoiceManagerImpl = invoiceManagerImpl;
             this.id = id;
         }
 
         @Override
         protected Void doInBackground() throws Exception {
-            invoiceManager.exportToPDF(invoiceManager.getInvoice(id));
+            invoiceManagerImpl.exportToPDF(invoiceManagerImpl.getInvoice(id));
             return null;
         }
     }
 
     void addRow(Invoice invoice) {
-        AddSwingWorker addSwingWorker = new AddSwingWorker(invoiceManager, invoice);
+        AddSwingWorker addSwingWorker = new AddSwingWorker(invoiceManagerImpl, invoice);
         addSwingWorker.execute();
     }
 
     void exportToPDF(Long id) {
-        PDFSwingWorker pdfSwingWorker = new PDFSwingWorker(invoiceManager, id);
+        PDFSwingWorker pdfSwingWorker = new PDFSwingWorker(invoiceManagerImpl, id);
         pdfSwingWorker.execute();
     }
 }

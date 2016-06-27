@@ -1,16 +1,27 @@
 package Gui;
 
 import backend.*;
+import org.exist.xmldb.EXistResource;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.Collection;
 import org.xmldb.api.base.Database;
 import org.xmldb.api.base.XMLDBException;
+import org.xmldb.api.modules.CollectionManagementService;
 import org.xmldb.api.modules.XMLResource;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.xml.transform.OutputKeys;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.awt.event.*;
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -41,38 +52,18 @@ public class MainFrame {
     private JPanel revenuePanel;
     private JTextField revenuesInTotalTextField;
     private JLabel hourlyWageLabel;
-    private static EmployeeManager employeeManager;
-    private static RevenueManager revenueManager;
-    private static InvoiceManager invoiceManager;
-    private static String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/db/RevenueEvidence";
-    private static Collection collection = null;
+
+    private static EmployeeManagerImpl employeeManagerImpl;
+    private static RevenueManagerImpl revenueManagerImpl;
+    private static InvoiceManagerImpl invoiceManagerImpl;
+    private static Collection collection;
 
     public static void initializeDatabase() throws Exception {
 
-        final String driver = "org.exist.xmldb.DatabaseImpl";
-        Class cl = Class.forName(driver);
-        Database database = (Database) cl.newInstance();
-        database.setProperty("create-database", "true");
-        DatabaseManager.registerDatabase(database);
-
-        XMLResource res = null;
-        try {
-            collection = DatabaseManager.getCollection(URI);
-            collection.setProperty(OutputKeys.INDENT, "no");
-        } finally {
-
-            if (collection != null) {
-                try {
-                    collection.close();
-                } catch (XMLDBException xe) {
-                    xe.printStackTrace();
-                }
-            }
-        }
-
-        employeeManager = new EmployeeManager(collection);
-        revenueManager = new RevenueManager(collection);
-        invoiceManager = new InvoiceManager(collection);
+        collection = new ExistDbImpl().setUpDatabase();
+        employeeManagerImpl = new EmployeeManagerImpl(collection);
+        revenueManagerImpl = new RevenueManagerImpl(collection);
+        invoiceManagerImpl = new InvoiceManagerImpl(collection);
     }
 
     public static void main(String[] args) throws Exception {
@@ -87,9 +78,9 @@ public class MainFrame {
 
     private MainFrame() {
 
-        employeeTable.setModel(new EmployeeTableModel(employeeManager));
-        revenueTable.setModel(new RevenueTableModel(revenueManager, employeeManager));
-        invoiceTable.setModel(new InvoiceTableModel(invoiceManager));
+        employeeTable.setModel(new EmployeeTableModel(employeeManagerImpl));
+        revenueTable.setModel(new RevenueTableModel(revenueManagerImpl, employeeManagerImpl));
+        invoiceTable.setModel(new InvoiceTableModel(invoiceManagerImpl));
 
         addEmployeeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -174,10 +165,10 @@ public class MainFrame {
 
         exportToPDFButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                invoiceTable.clearSelection();
                 InvoiceTableModel invoiceTableModel = (InvoiceTableModel) invoiceTable.getModel();
                 invoiceTableModel.exportToPDF((Long) invoiceTableModel.getValueAt(invoiceTable.getSelectedRow(), 0));
                 exportToPDFButton.setEnabled(false);
+                invoiceTable.clearSelection();
             }
         });
     }

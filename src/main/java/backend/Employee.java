@@ -1,7 +1,6 @@
 package backend;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Created by Tomas on 29.04.2016.

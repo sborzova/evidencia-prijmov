@@ -1,9 +1,7 @@
 package Gui;
 
 import backend.Employee;
-import backend.EmployeeManager;
 import backend.Revenue;
-import org.xmldb.api.base.Collection;
 
 import javax.swing.*;
 import java.awt.event.*;

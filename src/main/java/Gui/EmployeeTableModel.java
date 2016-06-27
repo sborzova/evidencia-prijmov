@@ -1,9 +1,7 @@
 package Gui;
 
 import backend.Employee;
-import backend.EmployeeManager;
-import backend.Revenue;
-import backend.RevenueManager;
+import backend.EmployeeManagerImpl;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -16,13 +14,13 @@ import java.util.List;
  */
 class EmployeeTableModel extends AbstractTableModel {
 
-    private final EmployeeManager employeeManager;
+    private final EmployeeManagerImpl employeeManagerImpl;
     private List<Employee> employees = new ArrayList<Employee>();
 
-    EmployeeTableModel(EmployeeManager employeeManager) {
+    EmployeeTableModel(EmployeeManagerImpl employeeManagerImpl) {
 
-        this.employeeManager = employeeManager;
-        ReadAllSwingWorker readAllSwingWorker = new ReadAllSwingWorker(employeeManager);
+        this.employeeManagerImpl = employeeManagerImpl;
+        ReadAllSwingWorker readAllSwingWorker = new ReadAllSwingWorker(employeeManagerImpl);
         readAllSwingWorker.execute();
 
     }
@@ -69,15 +67,15 @@ class EmployeeTableModel extends AbstractTableModel {
 
     private class ReadAllSwingWorker extends SwingWorker<List<Employee>, Void> {
 
-        private final EmployeeManager employeeManager;
+        private final EmployeeManagerImpl employeeManagerImpl;
 
-        public ReadAllSwingWorker(EmployeeManager employeeManager) {
-            this.employeeManager = employeeManager;
+        public ReadAllSwingWorker(EmployeeManagerImpl employeeManagerImpl) {
+            this.employeeManagerImpl = employeeManagerImpl;
         }
 
         @Override
         protected List<Employee> doInBackground() throws Exception {
-            return employeeManager.listAllEmployees();
+            return employeeManagerImpl.listAllEmployees();
         }
 
         @Override
@@ -93,17 +91,17 @@ class EmployeeTableModel extends AbstractTableModel {
 
     private class AddSwingWorker extends SwingWorker<Void, Void> {
 
-        private final EmployeeManager employeeManager;
+        private final EmployeeManagerImpl employeeManagerImpl;
         private final Employee employee;
 
-        public AddSwingWorker(EmployeeManager employeeManager, Employee employee) {
-            this.employeeManager = employeeManager;
+        public AddSwingWorker(EmployeeManagerImpl employeeManagerImpl, Employee employee) {
+            this.employeeManagerImpl = employeeManagerImpl;
             this.employee = employee;
         }
 
         @Override
         protected Void doInBackground() throws Exception {
-            employeeManager.createEmployee(employee);
+            employeeManagerImpl.createEmployee(employee);
             return null;
         }
 
@@ -121,17 +119,17 @@ class EmployeeTableModel extends AbstractTableModel {
 
     private class DeleteSwingWorker extends SwingWorker <Void, Void> {
 
-        private final EmployeeManager employeeManager;
+        private final EmployeeManagerImpl employeeManagerImpl;
         private final int row;
 
-        public DeleteSwingWorker(EmployeeManager employeeManager, int rowIndex) {
-            this.employeeManager = employeeManager;
+        public DeleteSwingWorker(EmployeeManagerImpl employeeManagerImpl, int rowIndex) {
+            this.employeeManagerImpl = employeeManagerImpl;
             this.row = rowIndex;
         }
 
         @Override
         protected Void doInBackground() throws Exception {
-            employeeManager.deleteEmployee(employeeManager.getEmployee((Long) getValueAt(row, 0)));
+            employeeManagerImpl.deleteEmployee(employeeManagerImpl.getEmployee((Long) getValueAt(row, 0)));
             return null;
         }
 
@@ -143,12 +141,12 @@ class EmployeeTableModel extends AbstractTableModel {
     }
 
     void addRow(Employee employee) {
-        AddSwingWorker addSwingWorker = new AddSwingWorker(employeeManager, employee);
+        AddSwingWorker addSwingWorker = new AddSwingWorker(employeeManagerImpl, employee);
         addSwingWorker.execute();
     }
 
     void deleteRow(int row) {
-        DeleteSwingWorker deleteSwingWorker = new DeleteSwingWorker(employeeManager, row);
+        DeleteSwingWorker deleteSwingWorker = new DeleteSwingWorker(employeeManagerImpl, row);
         deleteSwingWorker.execute();
     }
 }

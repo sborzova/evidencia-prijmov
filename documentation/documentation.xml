@@ -75,7 +75,9 @@
         <title>Jednotlivé záverečné správy</title>
         <section>
             <title>Tomáš Gordian</title>
-            <para>Fill</para>
+            <para>Moja úloha bola práca s databázou a naprogramovanie tried v backend package pracujúcich s ňou.
+                  Ako natívnu databázu sme zvolili eXist-db, ktorá je vstavaná do našej aplikácie.
+                  Na dotazovanie databázy som použil dotazovací jayzk XQuery.</para>
         </section>
         <section>
             <title>Silvia Borzová</title>
